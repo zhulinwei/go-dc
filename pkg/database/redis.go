@@ -1,9 +1,10 @@
 package database
 
 import (
+	"fmt"
 	"github.com/go-redis/redis"
-	"go.mongodb.org/mongo-driver/mongo"
 )
+import "go.mongodb.org/mongo-driver/mongo"
 
 type Database struct {
 	redis *redis.Client
@@ -17,5 +18,12 @@ func (database *Database) InitRedis() {
 }
 
 func (database *Database) InitMongoDB () {
-	//database.mongodb = mongo
+	//database.mongodb = mongo.
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://foo:bar@localhost:27017"))
+	fmt.Println(client, err)
+}
+
+func (database *Database) InitDatabase () {
+	database.InitRedis()
+	database.InitMongoDB()
 }

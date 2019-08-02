@@ -1,9 +1,13 @@
 package main
 
-import "github.com/zhulinwei/gin-demo/pkg/router"
+import (
+	"github.com/zhulinwei/gin-demo/pkg/database"
+	"github.com/zhulinwei/gin-demo/pkg/router"
+)
 
+func main() {
+	db := database.InitDatabase()
 
-func main () {
 	r := router.InitRouter()
 	r.Run()
 }
