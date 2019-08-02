@@ -5,7 +5,8 @@ type Database struct {
 	MongoDB
 }
 
-func (database *Database) InitDatabase() {
+func init() {
+	database := new(Database)
 	database.Redis.InitRedis()
 	database.MongoDB.InitMongoDB()
 }

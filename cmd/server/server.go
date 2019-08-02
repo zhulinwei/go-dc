@@ -1,13 +1,11 @@
 package main
 
 import (
-	"github.com/zhulinwei/gin-demo/pkg/database"
+	_ "github.com/zhulinwei/gin-demo/pkg/dao"
 	"github.com/zhulinwei/gin-demo/pkg/router"
 )
 
 func main() {
-	db := database.InitDatabase()
-
 	r := router.InitRouter()
 	r.Run()
 }
