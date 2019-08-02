@@ -2,13 +2,19 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zhulinwei/gin-demo/pkg/controller"
 )
 
-func InitTest2Router (r *gin.Engine) {
-	router := r.Group("/test2")
-	router.GET("v1", func(context *gin.Context) {
-		context.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+type Test2Router struct {
+	Test2Controller controller.Test2Controller
+}
+
+
+
+func (router Test2Router) InitTest2Router(r *gin.Engine) {
+
+	//test2Controller := new(controller.Test2Controller)
+	route := r.Group("/test2")
+	//router.GET("/ping", Test2Router.Test2Controller.Ping)
+	route.GET("/ping", router.Test2Controller.Ping)
 }
