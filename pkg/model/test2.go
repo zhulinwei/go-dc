@@ -1,6 +1,6 @@
 package model
 
 type Test2Model struct {
-	id      int
-	message string
+	//ID    objectid.ObjectID "_id,omitempty"
+	Name string `bson:"name",json:"name"`
 }

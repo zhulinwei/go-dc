@@ -1,6 +1,7 @@
-package database
+package dao
 
 import (
+	"errors"
 	"github.com/go-redis/redis"
 )
 
@@ -9,7 +10,12 @@ type Redis struct {
 }
 
 func (database *Redis) InitRedis() {
-	database.client = redis.NewClient(&redis.Options{
+	client := redis.NewClient(&redis.Options{
 		Addr: "localhost:6379",
 	})
+	_, err := client.Ping().Result()
+	if err != nil {
+		panic(errors.New("redis connect fail"))
+	}
+	database.client = client
 }

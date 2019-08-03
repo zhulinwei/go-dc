@@ -1,12 +1,26 @@
-package database
+package dao
 
-type Database struct {
+import (
+	"github.com/go-redis/redis"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+type Dao struct {
 	Redis
 	MongoDB
 }
 
+var dao = new(Dao)
+
+func GetReis() *redis.Client {
+	return dao.Redis.client
+}
+
+func GetMongoDB() *mongo.Client {
+	return dao.MongoDB.client
+}
+
 func init() {
-	database := new(Database)
-	database.Redis.InitRedis()
-	database.MongoDB.InitMongoDB()
+	dao.Redis.InitRedis()
+	dao.MongoDB.InitMongoDB()
 }
