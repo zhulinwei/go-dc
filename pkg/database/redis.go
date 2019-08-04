@@ -1,4 +1,4 @@
-package dao
+package database
 
 import (
 	"errors"
@@ -9,10 +9,11 @@ type Redis struct {
 	client *redis.Client
 }
 
-func (database *Redis) InitRedis() {
-	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
-	})
+func (database *Redis) InitRedis(redisConfig *RedisConfig) {
+	var redisOptions = &redis.Options{
+		Addr: redisConfig.Url,
+	}
+	client := redis.NewClient(redisOptions)
 	_, err := client.Ping().Result()
 	if err != nil {
 		panic(errors.New("redis connect fail"))

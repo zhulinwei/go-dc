@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "github.com/zhulinwei/gin-demo/pkg/dao"
+	_ "github.com/zhulinwei/gin-demo/pkg/database"
 	"github.com/zhulinwei/gin-demo/pkg/router"
 )
 

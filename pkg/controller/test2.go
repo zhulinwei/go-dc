@@ -1,16 +1,15 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/zhulinwei/gin-demo/pkg/service"
+"github.com/gin-gonic/gin"
+"github.com/zhulinwei/gin-demo/pkg/service"
 )
 
-type Test2Controller struct{
-	Test2Service service.Test2Service
-}
+type Test2Controller struct{}
 
-func (ctrl *Test2Controller) Ping(context *gin.Context) {
+func (*Test2Controller) Ping(context *gin.Context) {
+	test2Service := new(service.Test2Service)
 	context.JSON(200, gin.H{
-		"message": ctrl.Test2Service.Ping(),
+		"message": test2Service.Ping(),
 	})
 }
