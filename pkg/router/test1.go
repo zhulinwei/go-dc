@@ -14,5 +14,8 @@ func (*Test1Router) InitRouter(r *gin.Engine) {
 	router.GET("/ping", test1Controller.Ping)
 
 	router.POST("/users", test1Controller.SaveUser)
-	//router.GET("/users", test1Controller.QueryUsers)
+	router.GET("/users/:name", test1Controller.QueryUserByName)
+	router.PUT("/users/:name", test1Controller.UpdateUserByName)
+	router.DELETE("/users/:name", test1Controller.RemoveUserByName)
+
 }
