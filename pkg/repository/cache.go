@@ -1,15 +1,15 @@
-package database
+package repository
 
 import (
 	"errors"
 	"github.com/go-redis/redis"
 )
 
-type Redis struct {
+type Cache struct {
 	client *redis.Client
 }
 
-func (database *Redis) InitRedis(redisConfig *RedisConfig) {
+func (database *Cache) InitRedis(redisConfig *RedisConfig) {
 	var redisOptions = &redis.Options{
 		Addr: redisConfig.Url,
 	}

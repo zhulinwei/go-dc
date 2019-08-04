@@ -12,4 +12,7 @@ func (*Test1Router) InitRouter(r *gin.Engine) {
 
 	router := r.Group("/test1")
 	router.GET("/ping", test1Controller.Ping)
+
+	router.POST("/users", test1Controller.SaveUser)
+	//router.GET("/users", test1Controller.QueryUsers)
 }

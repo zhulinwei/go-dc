@@ -1,8 +1,8 @@
 package controller
 
 import (
-"github.com/gin-gonic/gin"
-"github.com/zhulinwei/gin-demo/pkg/service"
+	"github.com/gin-gonic/gin"
+	"github.com/zhulinwei/gin-demo/pkg/service"
 )
 
 type Test2Controller struct{}

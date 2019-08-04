@@ -1,11 +1,9 @@
-package database
+package repository
 
 import (
 	"github.com/go-redis/redis"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-type Databse struct {}
 
 type RedisConfig struct {
 	Url string
@@ -17,10 +15,10 @@ type MongoConfig struct {
 	CollectionName string
 }
 
-var cache = new(Redis)
+var cache = new(Cache)
 var mongodb = new(MongoDB)
 
-func GetReis() *redis.Client {
+func GetCacheClient() *redis.Client {
 	return cache.client
 }
 
@@ -41,6 +39,7 @@ func init() {
 	cache.InitRedis(&RedisConfig{
 		Url: "localhost:6379",
 	})
+
 	mongodb.InitMongoDB(&MongoConfig{
 		Url:            "mongodb://localhost:27017",
 		DatabaseName:   "test",
