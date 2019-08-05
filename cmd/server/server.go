@@ -17,17 +17,17 @@ func main () {
 	cache, mongo := database.InitDatabase()
 
 	// 初始化数据交互层
-	testDao := dao.InitDao(mongo)
+	userDao := dao.InitDao(mongo)
 
 	// 初始化服务层
-	testService := service.InitService(testDao)
+	userService := service.InitService(userDao)
 
 	// 初始化控制层
-	testController := controller.InitController(testService)
+	userController := controller.InitController(userService)
 
 	// 初始化路由层
-	router.InitRouter(route, testController)
+	router.InitRouter(route, userController)
 
-	fmt.Println(cache, mongo, testDao, testService, testController)
+	fmt.Println(cache, mongo, userDao, userController, userService)
 	route.Run()
 }

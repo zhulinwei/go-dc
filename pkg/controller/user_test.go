@@ -25,23 +25,19 @@ func TestTestController_QueryUserByName(t *testing.T) {
 	route := gin.Default()
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
-	mockTestService := mockService.NewMockITestService(mockCtrl)
-	mockTestController := NewTestController(mockTestService)
-	mockTestService.EXPECT().QueryUserByName(mockName).Return(model.Test{ Test1ID: mockObjectId, Age: 18, Name: mockName})
-
+	mockUserService := mockService.NewMockIUserService(mockCtrl)
+	mockUserController := NewUserController(mockUserService)
+	mockUserService.EXPECT().QueryUserByName(mockName).Return(model.User{ Test1ID: mockObjectId, Age: 18, Name: mockName})
 
 	route.GET(mockUrl, func(ctx *gin.Context) {
-		result := mockTestController.TestService.QueryUserByName(mockName)
+		result := mockUserController.userService.QueryUserByName(mockName)
 		ctx.JSON(http.StatusOK, result.Name)
 	})
 	request := httptest.NewRequest(mockMethod, mockUrl, nil)
 	recorder := httptest.NewRecorder()
 	route.ServeHTTP(recorder, request)
 
-
 	body, err := ioutil.ReadAll(recorder.Result().Body)
-
-
 	realResult, err := strconv.Unquote(string(body))
 
 	// assert result

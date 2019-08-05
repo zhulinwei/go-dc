@@ -5,8 +5,8 @@ import (
 	"github.com/zhulinwei/gin-demo/pkg/controller"
 )
 
-func InitRouter (route *gin.Engine, testController controller.ITestController){
-	testRouter := NewTestRouter(testController)
+func InitRouter (route *gin.Engine, userController controller.IUserController){
+	testRouter := NewTestRouter(userController)
 
 	testRouter.InitRouter(route)
 }

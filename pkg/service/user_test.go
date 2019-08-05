@@ -4,7 +4,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	mockDao "github.com/zhulinwei/gin-demo/pkg/dao/mock"
-	"github.com/zhulinwei/gin-demo/pkg/dto"
 	"github.com/zhulinwei/gin-demo/pkg/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,15 +12,15 @@ import (
 
 func TestTestService_SaveUser(t *testing.T) {
 	// mock data
-	mockTest := dto.Test{Age: 18, Name: "tony"}
+	mockTest := model.UserReq{Age: 18, Name: "tony"}
 	mockObjectId := primitive.NewObjectID()
 
 	// mock request
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
-	mockTestDao := mockDao.NewMockITestDao(mockCtrl)
-	mockTestService := NewTestService(mockTestDao)
-	mockTestDao.EXPECT().SaveUser(mockTest).Return(&mongo.InsertOneResult{InsertedID: mockObjectId})
+	mockUserDao := mockDao.NewMockIUserDao(mockCtrl)
+	mockTestService := NewUserService(mockUserDao)
+	mockUserDao.EXPECT().SaveUser(mockTest).Return(&mongo.InsertOneResult{InsertedID: mockObjectId})
 	realResult := mockTestService.SaveUser(mockTest)
 
 	// assert result
@@ -36,9 +35,9 @@ func TestTestService_QueryUserByName(t *testing.T) {
 	// mock request
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
-	mockTestDao := mockDao.NewMockITestDao(mockCtrl)
-	mockTestService := NewTestService(mockTestDao)
-	mockTestDao.EXPECT().QueryUserByName(mockName).Return(model.Test{Test1ID: mockObjectId, Age: 18, Name: "tony"})
+	mockTestDao := mockDao.NewMockIUserDao(mockCtrl)
+	mockTestService := NewUserService(mockTestDao)
+	mockTestDao.EXPECT().QueryUserByName(mockName).Return(model.User{Test1ID: mockObjectId, Age: 18, Name: "tony"})
 	realResult := mockTestService.QueryUserByName(mockName)
 
 	// assert result
@@ -54,8 +53,8 @@ func TestTestService_UpdateUserByName(t *testing.T) {
 	// mock request
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
-	mockTestDao := mockDao.NewMockITestDao(mockCtrl)
-	mockTestService := NewTestService(mockTestDao)
+	mockTestDao := mockDao.NewMockIUserDao(mockCtrl)
+	mockTestService := NewUserService(mockTestDao)
 	mockTestDao.EXPECT().UpdateUserByName(mockOldName, mockNewName).Return(&mongo.UpdateResult{ModifiedCount: mockCount})
 	realResult := mockTestService.UpdateUserByName(mockOldName, mockNewName)
 
@@ -68,11 +67,10 @@ func TestTestService_RemoveUserByName(t *testing.T) {
 	const mockName = "tony"
 	const mockCount = int64(1)
 
-
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
-	mockTestDao := mockDao.NewMockITestDao(mockCtrl)
-	mockTestService := NewTestService(mockTestDao)
+	mockTestDao := mockDao.NewMockIUserDao(mockCtrl)
+	mockTestService := NewUserService(mockTestDao)
 	mockTestDao.EXPECT().RemoveUserByName(mockName).Return(&mongo.DeleteResult{DeletedCount: mockCount})
 	realResult := mockTestService.RemoveUserByName(mockName)
 
