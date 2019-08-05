@@ -1,26 +1,21 @@
-package repository
+package database
 
 import (
 	"errors"
-	. "github.com/zhulinwei/gin-demo/pkg/util"
+	"github.com/zhulinwei/gin-demo/pkg/util"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-type MongoDB struct {
-	client     *mongo.Client
-	cursor     *mongo.Cursor
-	collection *mongo.Collection
-}
+type MongoDB struct {}
 
-func (database *MongoDB) InitMongoDB(mongoConfig *MongoConfig) {
-	// TODO 需要检查传入的配置
+func (mongodb *MongoDB) InitMongoDB(mongoConfig *MongoConfig) *mongo.Client {
 	var err error
 	var client *mongo.Client
 
 	// 链接MongoDB数据库
-	content := GetUitl().GetContent()
+	content := util.GetHelper().GetContent()
 	// 设置MongoDB选项值
 	mongoOptions := options.Client().ApplyURI(mongoConfig.Url)
 	if client, err = mongo.Connect(content, mongoOptions); err != nil {
@@ -31,6 +26,6 @@ func (database *MongoDB) InitMongoDB(mongoConfig *MongoConfig) {
 		panic(errors.New("mongodb ping fail"))
 	}
 
-	database.client = client
-	database.collection = client.Database(mongoConfig.DatabaseName).Collection(mongoConfig.CollectionName)
+	return client
 }
+

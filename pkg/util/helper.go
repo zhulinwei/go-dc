@@ -5,15 +5,15 @@ import (
 	"time"
 )
 
-type Util struct{}
+type Helper struct{}
 
-var util = new(Util)
+var helper = new(Helper)
 
-func GetUitl () *Util {
-	return util
+func GetHelper () *Helper {
+	return helper
 }
 
-func (*Util) GetContent() (ctx context.Context) {
+func (*Helper) GetContent() (ctx context.Context) {
 	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
 	return ctx
 }

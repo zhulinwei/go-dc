@@ -2,17 +2,12 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zhulinwei/gin-demo/pkg/controller"
 )
 
-var router = gin.Default()
-var test1Router = new(Test1Router)
-var test2Router = new(Test2Router)
+func InitRouter (route *gin.Engine, testController controller.ITestController){
+	testRouter := NewTestRouter(testController)
 
-func GetRoute () *gin.Engine {
-	return router
+	testRouter.InitRouter(route)
 }
 
-func init() {
-	test1Router.InitRouter(router)
-	test2Router.InitRouter(router)
-}
