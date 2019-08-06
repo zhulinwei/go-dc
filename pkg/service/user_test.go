@@ -19,8 +19,8 @@ func TestTestService_SaveUser(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 	mockUserDao := mockDao.NewMockIUserDao(mockCtrl)
-	mockTestService := NewUserService(mockUserDao)
 	mockUserDao.EXPECT().SaveUser(mockTest).Return(&mongo.InsertOneResult{InsertedID: mockObjectId})
+	mockTestService := NewUserService(mockUserDao)
 	realResult := mockTestService.SaveUser(mockTest)
 
 	// assert result
