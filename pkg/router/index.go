@@ -6,7 +6,7 @@ import (
 )
 
 func InitRouter (route *gin.Engine, userController controller.IUserController){
-	testRouter := NewTestRouter(userController)
+	testRouter := NewUserRouter(userController)
 
 	testRouter.InitRouter(route)
 }

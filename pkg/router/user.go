@@ -9,7 +9,7 @@ type UserRouter struct {
 	UserController controller.IUserController
 }
 
-func NewTestRouter (userController controller.IUserController) *UserRouter {
+func NewUserRouter (userController controller.IUserController) *UserRouter {
 	return &UserRouter{
 		UserController: userController,
 	}

@@ -16,28 +16,28 @@ type UserService struct {
 	UserDao dao.IUserDao
 }
 
-func NewUserService (userDao dao.IUserDao) *UserService {
-	return &UserService{
+func NewUserService (userDao dao.IUserDao) IUserService {
+	return UserService{
 		UserDao: userDao,
 	}
 }
 
-func (service *UserService) SaveUser (test model.UserReq) interface{} {
+func (service UserService) SaveUser (test model.UserReq) interface{} {
 	result := service.UserDao.SaveUser(test)
 	return result.InsertedID
 }
 
-func (service *UserService) QueryUserByName(name string) model.User {
+func (service UserService) QueryUserByName(name string) model.User {
 	result := service.UserDao.QueryUserByName(name)
 	return result
 }
 
-func (service *UserService) UpdateUserByName(oldName, newName string) interface{} {
+func (service UserService) UpdateUserByName(oldName, newName string) interface{} {
 	result := service.UserDao.UpdateUserByName(oldName, newName)
 	return result.ModifiedCount
 }
 
-func (service *UserService) RemoveUserByName(name string) interface{} {
+func (service UserService) RemoveUserByName(name string) interface{} {
 	result := service.UserDao.RemoveUserByName(name)
 	return result.DeletedCount
 }

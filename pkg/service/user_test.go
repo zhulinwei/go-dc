@@ -60,7 +60,6 @@ func TestTestService_UpdateUserByName(t *testing.T) {
 
 	// assert result
 	assert.Equal(t, mockCount, realResult)
-
 }
 
 func TestTestService_RemoveUserByName(t *testing.T) {

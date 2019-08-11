@@ -20,21 +20,21 @@ type UserController struct {
 	userService service.IUserService
 }
 
-func NewUserController(testService service.IUserService) *UserController {
-	return &UserController{
+func NewUserController(testService service.IUserService) IUserController {
+	return UserController{
 		userService: testService,
 	}
 }
 
 // Ping
-func (testController *UserController) Ping(ctx *gin.Context) {
+func (testController UserController) Ping(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"message": "pong",
 	})
 }
 
 // Create
-func (ctrl *UserController) SaveUser(ctx *gin.Context) {
+func (ctrl UserController) SaveUser(ctx *gin.Context) {
 	// 解析前端数据
 	var test model.UserReq
 	if ctx.ShouldBind(&test) != nil {
@@ -49,14 +49,14 @@ func (ctrl *UserController) SaveUser(ctx *gin.Context) {
 }
 
 // Read
-func (ctrl *UserController) QueryUserByName(ctx *gin.Context) {
+func (ctrl UserController) QueryUserByName(ctx *gin.Context) {
 	name := ctx.Param("name")
 	result := ctrl.userService.QueryUserByName(name)
 	ctx.JSON(http.StatusOK, result)
 }
 
 // Update
-func (ctrl *UserController) UpdateUserByName(ctx *gin.Context) {
+func (ctrl UserController) UpdateUserByName(ctx *gin.Context) {
 	oldName := ctx.Param("name")
 
 	var test model.UserReq
@@ -70,7 +70,7 @@ func (ctrl *UserController) UpdateUserByName(ctx *gin.Context) {
 }
 
 // Delete
-func (ctrl *UserController) RemoveUserByName(ctx *gin.Context) {
+func (ctrl UserController) RemoveUserByName(ctx *gin.Context) {
 	name := ctx.Param("name")
 
 	DeletedCount := ctrl.userService.RemoveUserByName(name)
