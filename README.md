@@ -6,7 +6,7 @@
 ```
 
 cmd
-  server         |--启动文件 
+  server.go      |--启动文件 
 pkg
   router         |--路由层
   controller     |--控制器层：负责数据解析、逻辑判断和返回结果
@@ -19,8 +19,7 @@ pkg
 ## 启动方式
 
 ```sh
-go build
-go run cms/server/server.go
+go run cms/server.go
 ```
 
 ## 注意事项
