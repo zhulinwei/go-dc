@@ -16,6 +16,12 @@ type UserService struct {
 	UserDao dao.IUserDao
 }
 
+func BuildUserService () IUserService {
+	return UserService{
+		UserDao: dao.BuildUserDao(),
+	}
+}
+
 func NewUserService (userDao dao.IUserDao) IUserService {
 	return UserService{
 		UserDao: userDao,
