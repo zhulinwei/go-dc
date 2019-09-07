@@ -5,17 +5,21 @@ import (
 	"github.com/zhulinwei/gin-demo/pkg/controller"
 )
 
+type IUserRouter interface {
+	InitRouter(r *gin.Engine)
+}
+
 type UserRouter struct {
 	UserController controller.IUserController
 }
 
-func NewUserRouter (userController controller.IUserController) *UserRouter {
-	return &UserRouter{
-		UserController: userController,
+func BuildUserRouter () IUserRouter {
+	return UserRouter{
+		UserController: controller.BuildUserController(),
 	}
 }
 
-func (userRouter *UserRouter) InitRouter(r *gin.Engine) {
+func (userRouter UserRouter) InitRouter(r *gin.Engine) {
 	route := r.Group("/test1")
 
 	route.GET("/ping", userRouter.UserController.Ping)
