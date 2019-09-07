@@ -20,6 +20,12 @@ type UserController struct {
 	userService service.IUserService
 }
 
+func BuildUserController () IUserController {
+	return UserController{
+		userService: service.BuildUserService(),
+	}
+}
+
 func NewUserController(testService service.IUserService) IUserController {
 	return UserController{
 		userService: testService,
