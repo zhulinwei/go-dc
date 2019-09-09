@@ -26,12 +26,6 @@ func BuildUserController () IUserController {
 	}
 }
 
-func NewUserController(testService service.IUserService) IUserController {
-	return UserController{
-		userService: testService,
-	}
-}
-
 // Ping
 func (testController UserController) Ping(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{

@@ -22,12 +22,6 @@ func BuildUserService () IUserService {
 	}
 }
 
-func NewUserService (userDao dao.IUserDao) IUserService {
-	return UserService{
-		UserDao: userDao,
-	}
-}
-
 func (service UserService) SaveUser (test model.UserReq) interface{} {
 	result := service.UserDao.SaveUser(test)
 	return result.InsertedID
