@@ -1,0 +1,9 @@
+name: gin-demo
+redis:
+  - name: gin-cache
+    db: 0
+    addr: xxx
+mongo:
+  - name: gin-db
+    addr: mongodb://localhost:27017
+    database: test_database
