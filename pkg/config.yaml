@@ -2,7 +2,7 @@ name: gin-demo
 redis:
   - name: gin-cache
     db: 0
-    addr: xxx
+    addr: localhost:6379
 mongo:
   - name: gin-db
     addr: mongodb://localhost:27017
