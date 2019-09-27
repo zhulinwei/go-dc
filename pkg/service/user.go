@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/zhulinwei/gin-demo/pkg/cache"
 	"github.com/zhulinwei/gin-demo/pkg/dao"
 	"github.com/zhulinwei/gin-demo/pkg/model"
 )
@@ -13,16 +14,18 @@ type IUserService interface {
 }
 
 type UserService struct {
+	Cache   cache.ICache
 	UserDao dao.IUserDao
 }
 
-func BuildUserService () IUserService {
+func BuildUserService() IUserService {
 	return UserService{
+		Cache:   cache.BuildCache(),
 		UserDao: dao.BuildUserDao(),
 	}
 }
 
-func (service UserService) SaveUser (test model.UserReq) interface{} {
+func (service UserService) SaveUser(test model.UserReq) interface{} {
 	result := service.UserDao.SaveUser(test)
 	return result.InsertedID
 }
