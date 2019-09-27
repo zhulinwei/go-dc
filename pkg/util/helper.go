@@ -37,18 +37,16 @@ func (Helper) IsPathExists(path string) (bool, error) {
 	return false, err
 }
 
-func (Helper) ParseServerConfig(filePath string) (model.Config, error) {
+func (Helper) ParseServerConfig(filePath string) (model.ServerConfig, error) {
 	var err error
 	var fileBytes []byte
-	var serverConfig model.Config
+	var serverConfig model.ServerConfig
 	if fileBytes, err = ioutil.ReadFile(filePath); err != nil {
 		fmt.Println(err)
 		return serverConfig, err
 	}
-	fmt.Println(fileBytes)
 	if err = yaml.Unmarshal(fileBytes, &serverConfig); err != nil {
 		return serverConfig, err
 	}
-	fmt.Println(serverConfig)
 	return serverConfig, nil
 }
