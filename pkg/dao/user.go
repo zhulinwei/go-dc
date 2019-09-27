@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"fmt"
 	"github.com/zhulinwei/gin-demo/pkg/database"
 	"github.com/zhulinwei/gin-demo/pkg/model"
 	"github.com/zhulinwei/gin-demo/pkg/util"
@@ -20,7 +19,7 @@ type UserDao struct {
 	UserCollection *mongo.Collection
 }
 
-func BuildUserDao () IUserDao {
+func BuildUserDao() IUserDao {
 	mongodb := database.BuildMongoDB()
 	return UserDao{
 		UserCollection: mongodb.UserCollection(),
@@ -37,7 +36,6 @@ func (userDao UserDao) SaveUser(test1 model.UserReq) *mongo.InsertOneResult {
 }
 
 func (userDao UserDao) QueryUserByName(name string) model.User {
-	fmt.Println("come in")
 	var err error
 	var user model.User
 

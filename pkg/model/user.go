@@ -7,7 +7,7 @@ import (
 type User struct {
 	Test1ID primitive.ObjectID `bson:"_id"`
 	Age     int64              `bson:"age"`
-	Name    string             `bson:"name`
+	Name    string             `bson:"name"`
 }
 
 type UserReq struct {

@@ -1,49 +1,63 @@
 package database
 
 import (
-	"errors"
+	"github.com/zhulinwei/gin-demo/pkg/config"
 	"github.com/zhulinwei/gin-demo/pkg/util"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"log"
+	"sync"
 )
+
+var mongoOnce sync.Once
+var mongoMutex sync.Mutex
+var mongoClientMap map[string]*mongo.Client
 
 type IMongoDB interface {
 	UserCollection() *mongo.Collection
 }
 
 type MongoDB struct {
-	client *mongo.Client
+	DB1Client *mongo.Client
 }
 
-func (mongodb MongoDB) UserCollection () *mongo.Collection {
-	return mongodb.client.Database("test_database").Collection("test_collection")
-}
-
-func BuildMongoDB () IMongoDB {
+func BuildMongoDB() IMongoDB {
 	return MongoDB{
-		client: connectMongoDB(&MongoConfig{
-			Url:            "mongodb://localhost:27017",
-			DatabaseName:   "test",
-			CollectionName: "test",
-		}),
+		DB1Client: mongoClientMap["db1"],
 	}
 }
 
-func connectMongoDB(mongoConfig *MongoConfig) *mongo.Client {
-	var err error
-	var client *mongo.Client
+func (mongodb MongoDB) UserCollection() *mongo.Collection {
+	return mongodb.DB1Client.Database("test_database").Collection("test_collection")
+}
 
-	// 链接MongoDB数据库
-	content := util.GetHelper().GetContent()
-	// 设置MongoDB选项值
-	mongoOptions := options.Client().ApplyURI(mongoConfig.Url)
-	if client, err = mongo.Connect(content, mongoOptions); err != nil {
-		panic(errors.New("mongodb connect fail"))
-	}
-	// 检查MongoDB状态值
-	if err = client.Ping(content, readpref.Primary()); err != nil {
-		panic(errors.New("mongodb ping fail"))
-	}
-	return client
+func init() {
+	mongoConfigs := config.ServerConfig().MongoDB
+	mongoOnce.Do(func() {
+		mongoMutex.Lock()
+		defer mongoMutex.Unlock()
+
+		mongoClientMap = make(map[string]*mongo.Client, len(mongoConfigs))
+		for _, mongoConfig := range mongoConfigs {
+			var err error
+			var client *mongo.Client
+
+			// 解析mongo链接地址
+			content := util.GetHelper().GetContent()
+			mongoOptions := options.Client().ApplyURI(mongoConfig.Addr)
+			// 连接mongodb数据库
+			if client, err = mongo.Connect(content, mongoOptions); err != nil {
+				log.Fatalf("mongodb connect failed: %v", err)
+				return
+			}
+			// 检查MongoDB状态值
+			if err = client.Ping(content, readpref.Primary()); err != nil {
+				log.Fatalf("mongodb ping failed: %v", err)
+				return
+			}
+			// 保存mongodb客户端
+			mongoClientMap[mongoConfig.Name] = client
+		}
+	})
 }

@@ -8,13 +8,13 @@ type ReidsConfig struct {
 }
 
 type MongoConfig struct {
-	Name       string `yaml:"name"`
-	Addr       string `yaml:"addr"`
-	Database   string `yaml:"database"`
+	Name     string `yaml:"name"`
+	Addr     string `yaml:"addr"`
+	Database string `yaml:"database"`
 }
 
-type Config struct {
-	Name  string `yaml:"name"`
-	Redis []ReidsConfig
-	Mongo []MongoConfig
+type ServerConfig struct {
+	Name    string        `yaml:"name"`
+	Redis   []ReidsConfig `yaml:"redis"`
+	MongoDB []MongoConfig `yaml:"mongo"`
 }
