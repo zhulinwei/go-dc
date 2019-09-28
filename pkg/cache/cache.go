@@ -16,18 +16,17 @@ type ICache interface {
 }
 
 type Cache struct {
-	Cache1Client *redis.Client
+	ClientMap map[string]*redis.Client
 }
-
 
 func BuildCache() Cache {
 	return Cache{
-		Cache1Client: redisClientMap["cache"],
+		ClientMap: redisClientMap,
 	}
 }
 
-func (cache Cache) Client () *redis.Client {
-	return cache.Cache1Client
+func (cache Cache) Client() *redis.Client {
+	return cache.ClientMap["cache"]
 }
 
 func init() {
