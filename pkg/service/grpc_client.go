@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	g "github.com/zhulinwei/gin-demo/pkg/grpc"
+	"github.com/zhulinwei/gin-demo/pkg/rpc"
 	greeterPb "github.com/zhulinwei/grpc-demo/helloworld/greeter/proto"
 	"google.golang.org/grpc"
 	"time"
@@ -18,7 +18,7 @@ type GreeterClient struct {
 
 func BuildGreeterService() IGreeterClient {
 	return GreeterClient{
-		Client: g.BuildGrpc().Client1(),
+		Client: rpc.BuildGrpc().Client1(),
 	}
 }
 

@@ -1,4 +1,4 @@
-package grpc
+package rpc
 
 import (
 	"fmt"
@@ -43,7 +43,6 @@ func init() {
 
 		grpcClientMap = make(map[string]*grpc.ClientConn, len(grpcConfigs))
 		for _, grpcConfig := range grpcConfigs {
-			fmt.Println(grpcConfig.Addr)
 			var err error
 			var client *grpc.ClientConn
 			if client, err = grpc.Dial(grpcConfig.Addr, grpc.WithInsecure()); err != nil {

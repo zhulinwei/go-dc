@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zhulinwei/gin-demo/pkg/service"
 	greeterPb "github.com/zhulinwei/grpc-demo/helloworld/greeter/proto"
+	"log"
 	"net/http"
 )
 
@@ -29,6 +30,7 @@ func (ctrl GreeterController) QueryGreeterFromGrpc(ctx *gin.Context) {
 	var response *greeterPb.HelloReply
 	if response, err = ctrl.greeterService.QueryGreeterFromGrpc(name); err != nil {
 		// TODO 错误处理
+		log.Printf("call greeter service fail: %v", err)
 	}
 
 	var message string
@@ -37,6 +39,7 @@ func (ctrl GreeterController) QueryGreeterFromGrpc(ctx *gin.Context) {
 	} else {
 		message = "nothing"
 	}
+	log.Printf("call greeter service success, message is: %v", response)
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": message,
 	})

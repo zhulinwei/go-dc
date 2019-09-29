@@ -1,11 +1,15 @@
 name: gin-demo
 httpPort: :3000
 grpcPort: :3001
+
 grpc:
   - name: grpc1
     addr: localhost:8080
+
   - name: grpc2
     addr: localhost:8081
+
+
 redis:
   - name: cache
     db: 0
