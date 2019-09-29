@@ -42,14 +42,14 @@ func init() {
 
 			// 解析redis链接地址
 			if redisOptions, err = redis.ParseURL(redisConfig.Addr); err != nil {
-				log.Fatalf("redis parse config failed: %v", err)
+				log.Printf("redis parse config failed: %v", err)
 				return
 			}
 
 			// 连接redis数据库
 			client := redis.NewClient(redisOptions)
 			if _, err := client.Ping().Result(); err != nil {
-				log.Fatalf("redis ping failed: %v", err)
+				log.Printf("redis ping failed: %v", err)
 				return
 			}
 

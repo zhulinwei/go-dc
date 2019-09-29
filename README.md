@@ -6,14 +6,18 @@
 ```
 
 cmd
-  server.go      |--启动文件 
+  server.go      |--启动文件
+configs
+  config.yaml    |--服务配置文件 
 pkg
-  router         |--路由层
-  controller     |--控制器层：负责数据解析、逻辑判断和返回结果
+  cache          |--缓存
+  config         |--配置读取
+  router         |--路由
+  controller     |--控制器：负责数据解析、逻辑判断和返回结果
   service        |--服务层：主要是处理控制层传入的数据并进行业务理
   dao            |--数据访问层：服务层获取数据的接口包
   model          |--数据模型层：定义在数据库中存储的实体结构
-  database       |--数据仓库层：数据库、缓存以及其他存储都放在这个包下
+  database       |--数据仓库层：数据库等存储都放在这个包下
   util           |--工具包：主要是一些小工具的包      
 ```
 ## 启动方式

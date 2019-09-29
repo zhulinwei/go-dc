@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/zhulinwei/gin-demo/pkg/model"
 	"github.com/zhulinwei/gin-demo/pkg/util"
+	"log"
 )
 
 const (
@@ -28,6 +29,6 @@ func init() {
 
 	var err error
 	if serverConfig, err = util.GetHelper().ParseServerConfig(serverConfigPath); err != nil {
-		panic(err.Error())
+		log.Fatalf("parse config fail: %v", err)
 	}
 }
