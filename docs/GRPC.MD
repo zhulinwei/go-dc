@@ -7,7 +7,7 @@
 ### 作为服务端对外提供服务
 
 #### 定义协议
-我们将定义的协议放在在`pkg/rpc/protobuf`文件夹下
+我们将定义的协议放在[pkg/rpc/protobuf](https://github.com/zhulinwei/go-dc/blob/master/pkg/rpc/protobuf/greeter.proto)文件夹下
 
 ```proto
 syntax = "proto3";
@@ -33,7 +33,7 @@ service Greeter {
 protoc --go_out=plugins=grpc:. *.proto
 ```
 
-生成的go文件详见`pkg/rpc/protobuf/greeter.pb.go`
+生成的go文件详见[pkg/rpc/protobuf/greeter.pb.go](https://github.com/zhulinwei/go-dc/blob/master/pkg/rpc/protobuf/greeter.pb.go)
 
 #### 注册服务
 
@@ -52,7 +52,7 @@ func GRPCRun(port string) {
 }
 ```
 
-详见`pkg/rpc/server`
+详见[pkg/rpc/server](https://github.com/zhulinwei/go-dc/blob/master/pkg/rpc/server.go)
 
 #### 启动rpc服务
 
@@ -68,7 +68,7 @@ func main() {
 }
 
 ```
-详见项目启动文件`cmd/main.go`，这里需要注意如果rpc服务与普通web服务放在同一个项目里，则需要需要开启go程
+详见项目启动文件[cmd/main.go](https://github.com/zhulinwei/go-dc/blob/master/cmd/main.go)，这里需要注意如果rpc服务与普通web服务放在同一个项目里，则需要需要开启go程
 
 ### 作为客户端调用其他服务
 
@@ -85,7 +85,7 @@ grpc:
 ...
 ```
 
-详见`configs/config.yaml`
+详见[configs/config.yaml](https://github.com/zhulinwei/go-dc/blob/master/configs/config.yaml)
 
 #### 连接rpc服务
 
@@ -135,7 +135,7 @@ func init() {
 }
 ```
 
-完成rpc的连接后（详见`pkg/rpc/client.go`），后面可以正常使用了
+连接详情见[pkg/rpc/client.go](https://github.com/zhulinwei/go-dc/blob/master/pkg/rpc/client.go)，完成rpc的连接后，后面可以正常使用了
 
 ### 调用服务
 
@@ -163,4 +163,4 @@ func (greeter GreeterClient) QueryGreeterFromGrpc(name string) (*greeterPb.Hello
 
 ```
 
-详见`pkg/service/greeter.go`
+详见[pkg/service/greeter.go](https://github.com/zhulinwei/go-dc/blob/master/pkg/service/greeter.go)
