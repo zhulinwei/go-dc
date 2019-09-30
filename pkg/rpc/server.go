@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"github.com/zhulinwei/go-dc/pkg/model/protobuf"
+	"github.com/zhulinwei/go-dc/pkg/rpc/protobuf"
 	"google.golang.org/grpc"
 	"log"
 	"net"

@@ -13,7 +13,7 @@ type IGreeterController interface {
 }
 
 type GreeterController struct {
-	greeterService service.IGreeterClient
+	greeterService service.IGreeter
 }
 
 func BuildGreeterController() IGreeterController {

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type IGreeterClient interface {
+type IGreeter interface {
 	QueryGreeterFromGrpc(name string) (*greeterPb.HelloReply, error)
 }
 
@@ -16,7 +16,7 @@ type GreeterClient struct {
 	Client *grpc.ClientConn
 }
 
-func BuildGreeterService() IGreeterClient {
+func BuildGreeterService() IGreeter {
 	return GreeterClient{
 		Client: rpc.BuildGrpc().Client1(),
 	}

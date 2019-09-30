@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"context"
-	"github.com/zhulinwei/go-dc/pkg/model/protobuf"
+	"github.com/zhulinwei/go-dc/pkg/rpc/protobuf"
 )
 
 type GreeterServer struct{}
