@@ -1,8 +1,8 @@
 package database
 
 import (
-	"github.com/zhulinwei/gin-demo/pkg/config"
-	"github.com/zhulinwei/gin-demo/pkg/util"
+	"github.com/zhulinwei/go-dc/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/util"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"

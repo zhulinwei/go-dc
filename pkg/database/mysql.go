@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/zhulinwei/gin-demo/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/config"
 	"log"
 	"sync"
 )

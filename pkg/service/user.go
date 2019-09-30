@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/zhulinwei/gin-demo/pkg/cache"
-	"github.com/zhulinwei/gin-demo/pkg/dao"
-	"github.com/zhulinwei/gin-demo/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/cache"
+	"github.com/zhulinwei/go-dc/pkg/dao"
+	"github.com/zhulinwei/go-dc/pkg/model"
 )
 
 type IUserService interface {

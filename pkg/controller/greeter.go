@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zhulinwei/gin-demo/pkg/service"
+	"github.com/zhulinwei/go-dc/pkg/service"
 	greeterPb "github.com/zhulinwei/grpc-demo/helloworld/greeter/proto"
 	"log"
 	"net/http"

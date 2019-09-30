@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/zhulinwei/gin-demo/pkg/config"
-	"github.com/zhulinwei/gin-demo/pkg/router"
-	"github.com/zhulinwei/gin-demo/pkg/rpc"
+	"github.com/zhulinwei/go-dc/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/router"
+	"github.com/zhulinwei/go-dc/pkg/rpc"
 	"log"
 )
 

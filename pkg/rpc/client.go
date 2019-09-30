@@ -1,8 +1,7 @@
 package rpc
 
 import (
-	"fmt"
-	"github.com/zhulinwei/gin-demo/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/config"
 	"google.golang.org/grpc"
 	"log"
 	"sync"

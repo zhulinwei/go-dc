@@ -6,7 +6,7 @@ package mock_dao
 
 import (
 	gomock "github.com/golang/mock/gomock"
-	model "github.com/zhulinwei/gin-demo/pkg/model"
+	model "github.com/zhulinwei/go-dc/pkg/model"
 	mongo "go.mongodb.org/mongo-driver/mongo"
 	reflect "reflect"
 )

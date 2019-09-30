@@ -2,7 +2,7 @@ package cache
 
 import (
 	"github.com/go-redis/redis"
-	"github.com/zhulinwei/gin-demo/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/config"
 	"log"
 	"sync"
 )

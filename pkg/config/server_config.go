@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/zhulinwei/gin-demo/pkg/model"
-	"github.com/zhulinwei/gin-demo/pkg/util"
+	"github.com/zhulinwei/go-dc/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/util"
 	"log"
 )
 

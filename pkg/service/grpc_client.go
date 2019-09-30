@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"github.com/zhulinwei/gin-demo/pkg/rpc"
+	"github.com/zhulinwei/go-dc/pkg/rpc"
 	greeterPb "github.com/zhulinwei/grpc-demo/helloworld/greeter/proto"
 	"google.golang.org/grpc"
 	"time"

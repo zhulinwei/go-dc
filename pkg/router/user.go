@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zhulinwei/gin-demo/pkg/controller"
+	"github.com/zhulinwei/go-dc/pkg/controller"
 )
 
 type IUserRouter interface {

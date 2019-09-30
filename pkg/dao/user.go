@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"github.com/zhulinwei/gin-demo/pkg/database"
-	"github.com/zhulinwei/gin-demo/pkg/model"
-	"github.com/zhulinwei/gin-demo/pkg/util"
+	"github.com/zhulinwei/go-dc/pkg/database"
+	"github.com/zhulinwei/go-dc/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )

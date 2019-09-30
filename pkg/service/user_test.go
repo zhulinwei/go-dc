@@ -3,8 +3,8 @@ package service
 import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	mockDao "github.com/zhulinwei/gin-demo/pkg/dao/mock"
-	"github.com/zhulinwei/gin-demo/pkg/model"
+	mockDao "github.com/zhulinwei/go-dc/pkg/dao/mock"
+	"github.com/zhulinwei/go-dc/pkg/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"testing"

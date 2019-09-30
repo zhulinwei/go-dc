@@ -3,7 +3,7 @@ package util
 import (
 	"context"
 	"fmt"
-	"github.com/zhulinwei/gin-demo/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/model"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"

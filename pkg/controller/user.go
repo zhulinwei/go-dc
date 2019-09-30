@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zhulinwei/gin-demo/pkg/model"
-	"github.com/zhulinwei/gin-demo/pkg/service"
+	"github.com/zhulinwei/go-dc/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/service"
 )
 
 type IUserController interface {

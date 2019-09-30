@@ -1,4 +1,4 @@
-name: gin-demo
+name: go-dc
 httpPort: :3000
 grpcPort: :3001
 

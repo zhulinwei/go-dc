@@ -6,7 +6,7 @@ package mock_service
 
 import (
 	gomock "github.com/golang/mock/gomock"
-	model "github.com/zhulinwei/gin-demo/pkg/model"
+	model "github.com/zhulinwei/go-dc/pkg/model"
 	reflect "reflect"
 )
 
