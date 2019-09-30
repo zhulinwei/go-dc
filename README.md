@@ -13,6 +13,7 @@ pkg
   cache          |--缓存
   config         |--配置读取
   router         |--路由
+  rpc            |--rpc服务
   controller     |--控制器：负责数据解析、逻辑判断和返回结果
   service        |--服务层：主要是处理控制层传入的数据并进行业务理
   dao            |--数据访问层：服务层获取数据的接口包
