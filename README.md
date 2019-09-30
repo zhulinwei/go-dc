@@ -8,7 +8,8 @@
 cmd
   server.go      |--启动文件
 configs
-  config.yaml    |--服务配置文件 
+  config.yaml    |--服务配置文件
+docs             |--常用文档 
 pkg
   cache          |--缓存
   config         |--配置读取
