@@ -21,6 +21,7 @@ type Grpc struct {
 }
 
 func BuildGrpc() IGrpc {
+	initGrpc()
 	return Grpc{
 		ClientMap: grpcClientMap,
 	}
@@ -34,7 +35,7 @@ func (grpc Grpc) Client2() *grpc.ClientConn {
 	return grpc.ClientMap["grpc2"]
 }
 
-func init() {
+func initGrpc() {
 	grpcConfigs := config.ServerConfig().Grpc
 	grpcOnce.Do(func() {
 		grpcMutex.Lock()
