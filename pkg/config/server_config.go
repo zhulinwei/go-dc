@@ -4,6 +4,7 @@ import (
 	"github.com/zhulinwei/go-dc/pkg/model"
 	"github.com/zhulinwei/go-dc/pkg/util"
 	"log"
+	"sync"
 )
 
 const (
@@ -12,14 +13,14 @@ const (
 )
 
 var serverConfig model.ServerConfig
+var serverConfigMutex sync.Mutex
+var isServerConfigParseFinish bool
 
-func ServerConfig() model.ServerConfig {
-	return serverConfig
-}
+func parseServerConfig(){
+	serverConfigMutex.Lock()
+	defer serverConfigMutex.Unlock()
 
-func init() {
 	var serverConfigPath string
-
 	// 优先使用外部配置文件，后使用默认配置文件（用于容器化方案）
 	if exist, _ := util.GetHelper().IsPathExists(externalConfigPath); exist {
 		serverConfigPath = externalConfigPath
@@ -31,4 +32,12 @@ func init() {
 	if serverConfig, err = util.GetHelper().ParseServerConfig(serverConfigPath); err != nil {
 		log.Fatalf("parse config fail: %v", err)
 	}
+	isServerConfigParseFinish = true
+}
+
+func ServerConfig() model.ServerConfig {
+	if !isServerConfigParseFinish {
+		parseServerConfig()
+	}
+	return serverConfig
 }

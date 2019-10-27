@@ -20,7 +20,7 @@ type UserController struct {
 	userService service.IUserService
 }
 
-func BuildUserController () IUserController {
+func BuildUserController() IUserController {
 	return UserController{
 		userService: service.BuildUserService(),
 	}
