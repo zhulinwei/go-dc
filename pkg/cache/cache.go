@@ -20,6 +20,7 @@ type Cache struct {
 }
 
 func BuildCache() Cache {
+	initCache()
 	return Cache{
 		ClientMap: redisClientMap,
 	}
@@ -29,7 +30,7 @@ func (cache Cache) Client() *redis.Client {
 	return cache.ClientMap["cache"]
 }
 
-func init() {
+func initCache() {
 	redisConfigs := config.ServerConfig().Redis
 	redisOnce.Do(func() {
 		redisMutex.Lock()
