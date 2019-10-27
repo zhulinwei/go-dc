@@ -23,6 +23,7 @@ type MongoDB struct {
 }
 
 func BuildMongoDB() IMongoDB {
+	initMongoDB()
 	return MongoDB{
 		DB1Client: mongoClientMap["db1"],
 	}
@@ -32,7 +33,7 @@ func (mongodb MongoDB) UserCollection() *mongo.Collection {
 	return mongodb.DB1Client.Database("test_database").Collection("test_collection")
 }
 
-func init() {
+func initMongoDB() {
 	mongoConfigs := config.ServerConfig().MongoDB
 	mongoOnce.Do(func() {
 		mongoMutex.Lock()

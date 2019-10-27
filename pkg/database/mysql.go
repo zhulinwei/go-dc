@@ -21,6 +21,7 @@ type MySQL struct {
 }
 
 func BuildMySQL() IMySQL {
+	initMySQL()
 	return MySQL{
 		ClientMap: mysqlClientMap,
 	}
@@ -30,7 +31,7 @@ func (mysql MySQL) DB1Client() *sql.DB {
 	return mysql.ClientMap["db1"]
 }
 
-func init() {
+func initMySQL() {
 	mysqlConfigs := config.ServerConfig().MySQL
 	mysqlOnce.Do(func() {
 		mysqlMutex.Lock()
