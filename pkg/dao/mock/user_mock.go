@@ -35,10 +35,10 @@ func (m *MockIUserDao) EXPECT() *MockIUserDaoMockRecorder {
 }
 
 // QueryUserByName mocks base method
-func (m *MockIUserDao) QueryUserByName(name string) model.User {
+func (m *MockIUserDao) QueryUserByName(name string) model.UserDB {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryUserByName", name)
-	ret0, _ := ret[0].(model.User)
+	ret0, _ := ret[0].(model.UserDB)
 	return ret0
 }
 
