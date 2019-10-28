@@ -9,7 +9,7 @@ import (
 )
 
 type IUserDao interface {
-	QueryUserByName(name string) model.User
+	QueryUserByName(name string) model.UserDB
 	SaveUser(test1 model.UserReq) *mongo.InsertOneResult
 	RemoveUserByName(name string) *mongo.DeleteResult
 	UpdateUserByName(oldName, newName string) *mongo.UpdateResult
@@ -35,9 +35,9 @@ func (userDao UserDao) SaveUser(test1 model.UserReq) *mongo.InsertOneResult {
 	return result
 }
 
-func (userDao UserDao) QueryUserByName(name string) model.User {
+func (userDao UserDao) QueryUserByName(name string) model.UserDB {
 	var err error
-	var user model.User
+	var user model.UserDB
 
 	if err = userDao.UserCollection.FindOne(util.GetHelper().GetContent(), bson.D{{"name", name}}).Decode(&user); err != nil {
 		// TODO 错误处理

@@ -8,7 +8,7 @@ import (
 
 type IUserService interface {
 	SaveUser(test1 model.UserReq) interface{}
-	QueryUserByName(name string) model.User
+	QueryUserByName(name string) model.UserDB
 	RemoveUserByName(name string) interface{}
 	UpdateUserByName(oldName, newName string) interface{}
 }
@@ -30,7 +30,7 @@ func (service UserService) SaveUser(test model.UserReq) interface{} {
 	return result.InsertedID
 }
 
-func (service UserService) QueryUserByName(name string) model.User {
+func (service UserService) QueryUserByName(name string) model.UserDB {
 	result := service.UserDao.QueryUserByName(name)
 	return result
 }

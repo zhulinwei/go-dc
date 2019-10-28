@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -9,15 +10,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"io/ioutil"
 	"net/http/httptest"
-	"strconv"
 	"testing"
 )
 
 func TestUserController_QueryUserByName(t *testing.T) {
 	//mock data
+	const mockUrl = "/:name"
 	const mockName = "tony"
 	const mockMethod = "GET"
-	const mockUrl = "/test1/users/tony"
 	mockObjectId := primitive.NewObjectID()
 
 	// mock request
@@ -27,20 +27,24 @@ func TestUserController_QueryUserByName(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	mockUserService := mockService.NewMockIUserService(mockCtrl)
-	mockUserService.EXPECT().QueryUserByName(mockName).Return(model.User{ Test1ID: mockObjectId, Age: 18, Name: mockName})
+	mockUserService.EXPECT().QueryUserByName(mockName).Return(model.UserDB{ Test1ID: mockObjectId, Age: 18, Name: mockName})
 
 	mockUserController := UserController{
 		userService:mockUserService,
 	}
 	route.GET(mockUrl, mockUserController.QueryUserByName)
-	request := httptest.NewRequest(mockMethod, mockUrl, nil)
+	request := httptest.NewRequest(mockMethod, "/tony", nil)
 	recorder := httptest.NewRecorder()
 	route.ServeHTTP(recorder, request)
 
 	body, err := ioutil.ReadAll(recorder.Result().Body)
-	realResult, err := strconv.Unquote(string(body))
+	assert.NoError(t, err)
+
+	var result model.UserDB
+	err = json.Unmarshal(body, &result)
+	assert.NoError(t, err)
 
 	// assert result
 	assert.NoError(t, err)
-	assert.Equal(t, realResult, mockName)
+	assert.Equal(t, result.Name, mockName)
 }
