@@ -1,4 +1,5 @@
 name: go-dc
+mode: debug
 httpPort: :3000
 grpcPort: :3001
 grpc:
