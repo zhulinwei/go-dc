@@ -1,31 +1,20 @@
 package main
 
 import (
+	"github.com/zhulinwei/go-dc/pkg/rpc"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/zhulinwei/go-dc/pkg/config"
 	"github.com/zhulinwei/go-dc/pkg/router"
-	"github.com/zhulinwei/go-dc/pkg/rpc"
-	"log"
-	"net/http"
-	"time"
-)
-
-const (
-	DebugMode      = "debug"
-	ReleaseMode    = "release"
-	ProductionMode = "production"
+	"github.com/zhulinwei/go-dc/pkg/util/log"
 )
 
 func main() {
 	go rpc.GRPCRun(config.ServerConfig().GrpcPort)
 
-	mode := config.ServerConfig().Mode
-	if mode == ProductionMode || mode == ReleaseMode {
-		gin.SetMode(gin.ReleaseMode)
-
-	}
 	route := gin.New()
-	route.Use(gin.Logger())
 	router.InitRoute(route)
 	server := &http.Server{
 		// 监听的TCP地址
@@ -42,6 +31,6 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	if err := server.ListenAndServe(); err != nil {
-		log.Fatalf("server run failed: %v", err)
+		log.Info("server run failed", log.String("err", err.Error()))
 	}
 }

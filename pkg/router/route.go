@@ -4,11 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func BuildRoute () *gin.Engine {
-	route := gin.Default()
-
+func InitRoute(route *gin.Engine) {
 	BuildUserRouter().InitRouter(route)
 	BuildGreeterRouter().InitRouter(route)
-
-	return route
 }

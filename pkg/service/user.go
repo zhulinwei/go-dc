@@ -4,10 +4,12 @@ import (
 	"github.com/zhulinwei/go-dc/pkg/cache"
 	"github.com/zhulinwei/go-dc/pkg/dao"
 	"github.com/zhulinwei/go-dc/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/util/log"
 )
 
 type IUserService interface {
-	SaveUser(test1 model.UserReq) interface{}
+	SaveUser(user model.UserRequest) interface{}
+	BulkSaveUser(users []model.UserRequest) interface{}
 	QueryUserByName(name string) model.UserDB
 	RemoveUserByName(name string) interface{}
 	UpdateUserByName(oldName, newName string) interface{}
@@ -25,9 +27,19 @@ func BuildUserService() IUserService {
 	}
 }
 
-func (service UserService) SaveUser(test model.UserReq) interface{} {
-	result := service.UserDao.SaveUser(test)
+func (service UserService) SaveUser(user model.UserRequest) interface{} {
+	result := service.UserDao.SaveUser(user)
 	return result.InsertedID
+}
+
+func (service UserService) BulkSaveUser(users []model.UserRequest) interface{} {
+
+	docs := []interface{}{users}
+	log.Debug("docs", log.Reflect("docs", docs))
+
+	result := service.UserDao.BulkSaveUser(users)
+
+	return result.InsertedIDs
 }
 
 func (service UserService) QueryUserByName(name string) model.UserDB {

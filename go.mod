@@ -18,6 +18,7 @@ require (
 	github.com/xdg/stringprep v1.0.0 // indirect
 	github.com/zhulinwei/grpc-demo v0.0.0-20190927032719-ec4170697990
 	go.mongodb.org/mongo-driver v1.1.1
+	go.uber.org/zap v1.13.0
 	google.golang.org/appengine v1.4.0 // indirect
 	google.golang.org/grpc v1.24.0
 	gopkg.in/yaml.v3 v3.0.0-20190924164351-c8b7dadae555

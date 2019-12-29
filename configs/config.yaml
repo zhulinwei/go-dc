@@ -1,7 +1,10 @@
 name: go-dc
-mode: debug
+mode: release
 httpPort: :3000
 grpcPort: :3001
+log:
+  level: -1
+  disableCaller: true
 grpc:
   - name: grpc1
     addr: localhost:8080

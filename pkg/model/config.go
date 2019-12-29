@@ -1,5 +1,22 @@
 package model
 
+type ServerConfig struct {
+	Log      LogConfig     `yaml:"log"`
+	Name     string        `yaml:"name"`
+	Mode     string        `yaml:"mode"`
+	Grpc     []GrpcConfig  `yaml:"grpc"`
+	MySQL    []MySQLConfig `yaml:"mysql"`
+	Redis    []ReidsConfig `yaml:"redis"`
+	MongoDB  []MongoConfig `yaml:"mongo"`
+	HttpPort string        `yaml:"httpPort"`
+	GrpcPort string        `yaml:"grpcPort"`
+}
+
+type LogConfig struct {
+	Level         int    `yaml:"level"`
+	DisableCaller bool `yaml:"disableCaller"`
+}
+
 type GrpcConfig struct {
 	Name string `yaml:"name"`
 	Addr string `yaml:"addr"`
@@ -22,15 +39,4 @@ type MongoConfig struct {
 	Name     string `yaml:"name"`
 	Addr     string `yaml:"addr"`
 	Database string `yaml:"database"`
-}
-
-type ServerConfig struct {
-	Name     string        `yaml:"name"`
-	Mode     string        `yaml:"mode"`
-	Grpc     []GrpcConfig  `yaml:"grpc"`
-	MySQL    []MySQLConfig `yaml:"mysql"`
-	Redis    []ReidsConfig `yaml:"redis"`
-	MongoDB  []MongoConfig `yaml:"mongo"`
-	HttpPort string        `yaml:"httpPort"`
-	GrpcPort string        `yaml:"grpcPort"`
 }

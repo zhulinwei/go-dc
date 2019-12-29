@@ -39,13 +39,13 @@ func initMongoDB() {
 		mongoMutex.Lock()
 		defer mongoMutex.Unlock()
 
+		content := util.CommonContent()
 		mongoClientMap = make(map[string]*mongo.Client, len(mongoConfigs))
 		for _, mongoConfig := range mongoConfigs {
 			var err error
 			var client *mongo.Client
 
 			// 解析mongo链接地址
-			content := util.GetHelper().GetContent()
 			mongoOptions := options.Client().ApplyURI(mongoConfig.Addr)
 			// 连接mongodb数据库
 			if client, err = mongo.Connect(content, mongoOptions); err != nil {

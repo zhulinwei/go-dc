@@ -5,18 +5,18 @@ import (
 )
 
 type UserDB struct {
-	Test1ID primitive.ObjectID `bson:"_id"`
-	Age     int64              `bson:"age"`
-	Name    string             `bson:"name"`
+	ID   primitive.ObjectID `bson:"_id"`
+	Age  int64              `bson:"age"`
+	Name string             `bson:"name"`
 }
 
-type UserReq struct {
+type UserRequest struct {
 	Age  int    `json:"age" binding:"required"`
 	Name string `json:"name" binding:"required"`
 }
 
-type UserRes struct {
-	Test1ID primitive.ObjectID `json:"_id"`
-	Age     int64              `json:"age"`
-	Name    string             `json:"name"`
+type UserResponse struct {
+	ID   primitive.ObjectID `json:"_id"`
+	Age  int              `json:"age"`
+	Name string             `json:"name"`
 }
