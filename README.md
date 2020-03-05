@@ -25,7 +25,7 @@ pkg
 ## 启动方式
 
 ```sh
-go run cms/server.go
+go run cmd/server.go
 ```
 
 ## 注意事项
