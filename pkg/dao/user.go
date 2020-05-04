@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/zhulinwei/go-dc/pkg/database"
 	"github.com/zhulinwei/go-dc/pkg/model"
@@ -26,9 +27,9 @@ type UserDao struct {
 }
 
 func BuildUserDao() IUserDao {
-	mongodb := database.BuildMongoDB()
+	fmt.Println(database.BuildMongoDB())
 	return UserDao{
-		UserCollection: mongodb.UserCollection(),
+		UserCollection: database.BuildMongoDB().UserCollection(),
 	}
 }
 

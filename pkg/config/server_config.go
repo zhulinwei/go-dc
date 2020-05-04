@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"sync"
 
@@ -10,7 +11,8 @@ import (
 
 const (
 	externalConfigPath = "/var/config.yaml"
-	defaultConfigPath  = "./configs/config.yaml"
+	// defaultConfigPath  = "./configs/config.yaml"
+	defaultConfigPath = "/configs/config.yaml"
 )
 
 var serverConfig model.ServerConfig
@@ -18,6 +20,7 @@ var serverConfigMutex sync.Mutex
 var isServerConfigParseFinish bool
 
 func ServerConfig() model.ServerConfig {
+	fmt.Println("come in ServerConfig")
 	if !isServerConfigParseFinish {
 		parseServerConfig()
 	}
@@ -25,6 +28,7 @@ func ServerConfig() model.ServerConfig {
 }
 
 func parseServerConfig() {
+	fmt.Println("come in config")
 	serverConfigMutex.Lock()
 	defer serverConfigMutex.Unlock()
 

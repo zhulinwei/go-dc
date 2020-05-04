@@ -28,7 +28,7 @@ func TestUserController_QueryUserByName(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	mockUserService := mockService.NewMockIUserService(mockCtrl)
-	mockUserService.EXPECT().QueryUserByName(mockName).Return(model.UserDB{ID: mockObjectId, Age: 18, Name: mockName})
+	mockUserService.EXPECT().QueryUserByName(mockName).Return(&model.UserDB{ID: mockObjectId, Age: 18, Name: mockName})
 
 	mockUserController := UserController{
 		userService: mockUserService,

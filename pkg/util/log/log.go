@@ -1,10 +1,11 @@
 package log
 
 import (
+	"log"
+
 	"github.com/zhulinwei/go-dc/pkg/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"log"
 )
 
 var logger *zap.Logger
@@ -42,7 +43,7 @@ func init() {
 
 	var err error
 	if logger, err = logConfig.Build(); err != nil {
-		log.Fatalf("can't initialize zap logger: %v", err)
+		log.Fatalf("can't initialize zap logger: %v", err.Error())
 	}
 	defer logger.Sync()
 }

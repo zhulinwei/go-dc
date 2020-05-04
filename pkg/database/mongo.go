@@ -1,65 +1,74 @@
 package database
 
 import (
-	"log"
 	"sync"
 
 	"github.com/zhulinwei/go-dc/pkg/config"
+
 	"github.com/zhulinwei/go-dc/pkg/util"
-	"go.mongodb.org/mongo-driver/mongo"
+	"github.com/zhulinwei/go-dc/pkg/util/log"
+
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
+
+	"github.com/zhulinwei/go-dc/pkg/model"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var mongoOnce sync.Once
-var mongoMutex sync.Mutex
-var mongoClientMap map[string]*mongo.Client
+const (
+	databaseKey    = "db"
+	databaseName   = "test_database"
+	collectionName = "test_collection"
+)
 
 type IMongoDB interface {
 	UserCollection() *mongo.Collection
 }
 
 type MongoDB struct {
-	DB1Client *mongo.Client
+	once      sync.Once
+	configs   []model.MongoConfig
+	clientMap map[string]*mongo.Client
 }
 
+var mongodb *MongoDB
+
 func BuildMongoDB() IMongoDB {
-	initMongoDB()
-	return MongoDB{
-		DB1Client: mongoClientMap["db1"],
+	if mongodb == nil {
+		mongodb := MongoDB{configs: config.ServerConfig().MongoDB}
+		mongodb.init()
 	}
+
+	return mongodb
 }
 
 func (mongodb MongoDB) UserCollection() *mongo.Collection {
-	return mongodb.DB1Client.Database("test_database").Collection("test_collection")
+	return mongodb.clientMap[databaseKey].Database(databaseName).Collection(collectionName)
 }
 
-func initMongoDB() {
-	mongoConfigs := config.ServerConfig().MongoDB
-	mongoOnce.Do(func() {
-		mongoMutex.Lock()
-		defer mongoMutex.Unlock()
+func (mongodb MongoDB) init() {
+	mongodb.once.Do(func() {
+		var wg sync.WaitGroup
 
-		content := util.CommonContent()
-		mongoClientMap = make(map[string]*mongo.Client, len(mongoConfigs))
-		for _, mongoConfig := range mongoConfigs {
-			var err error
-			var client *mongo.Client
+		length := len(mongodb.configs)
+		wg.Add(length)
+		mongodb.clientMap = make(map[string]*mongo.Client, length)
 
-			// 解析mongo链接地址
-			mongoOptions := options.Client().ApplyURI(mongoConfig.Addr)
-			// 连接mongodb数据库
-			if client, err = mongo.Connect(content, mongoOptions); err != nil {
-				log.Fatalf("mongodb connect failed: %v", err)
-				return
-			}
-			// 检查MongoDB状态值
-			if err = client.Ping(content, readpref.Primary()); err != nil {
-				log.Fatalf("mongodb ping failed: %v", err)
-				return
-			}
-			// 保存mongodb客户端
-			mongoClientMap[mongoConfig.Name] = client
+		for _, mongoConfig := range mongodb.configs {
+
+			go func(config model.MongoConfig, work *sync.WaitGroup) {
+				clientOptions := options.Client().ApplyURI(config.Addr)
+
+				mongoClient, err := mongo.Connect(util.CommonContent(), clientOptions)
+				if err != nil {
+					log.Error("mongodb connection fail", log.String("error", err.Error()))
+					return
+				}
+
+				mongodb.clientMap[config.Name] = mongoClient
+			}(mongoConfig, &wg)
 		}
+
+		wg.Wait()
 	})
 }

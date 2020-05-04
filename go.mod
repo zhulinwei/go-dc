@@ -21,5 +21,6 @@ require (
 	go.uber.org/zap v1.13.0
 	google.golang.org/appengine v1.4.0 // indirect
 	google.golang.org/grpc v1.24.0
+	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/yaml.v3 v3.0.0-20190924164351-c8b7dadae555
 )

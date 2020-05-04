@@ -1,18 +1,19 @@
 package service
 
 import (
+	"testing"
+
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/assert"
 	mockDao "github.com/zhulinwei/go-dc/pkg/dao/mock"
 	"github.com/zhulinwei/go-dc/pkg/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"testing"
+	"gopkg.in/go-playground/assert.v1"
 )
 
-func TestTestService_SaveUser(t *testing.T) {
+func TestUserService_SaveUser(t *testing.T) {
 	// mock data
-	mockTest := model.UserReq{Age: 18, Name: "tony"}
+	mockTest := model.UserRequest{Age: 18, Name: "tony"}
 	mockObjectId := primitive.NewObjectID()
 
 	// mock request
@@ -29,7 +30,7 @@ func TestTestService_SaveUser(t *testing.T) {
 	assert.Equal(t, mockObjectId, realResult)
 }
 
-func TestTestService_QueryUserByName(t *testing.T) {
+func TestUserService_QueryUserByName(t *testing.T) {
 	// mock data
 	const mockName = "tony"
 	mockObjectId := primitive.NewObjectID()
@@ -41,14 +42,14 @@ func TestTestService_QueryUserByName(t *testing.T) {
 	mockUserService := UserService{
 		UserDao: mockUserDao,
 	}
-	mockUserDao.EXPECT().QueryUserByName(mockName).Return(model.UserDB{Test1ID: mockObjectId, Age: 18, Name: "tony"})
+	mockUserDao.EXPECT().QueryUserByName(mockName).Return(&model.UserDB{ID: mockObjectId, Age: 18, Name: "tony"}, nil)
 	realResult := mockUserService.QueryUserByName(mockName)
 
 	// assert result
 	assert.Equal(t, mockName, realResult.Name)
 }
 
-func TestTestService_UpdateUserByName(t *testing.T) {
+func TestUserService_UpdateUserByName(t *testing.T) {
 	// mock data
 	const mockCount = int64(1)
 	const mockOldName = "tony1"
@@ -68,7 +69,7 @@ func TestTestService_UpdateUserByName(t *testing.T) {
 	assert.Equal(t, mockCount, realResult)
 }
 
-func TestTestService_RemoveUserByName(t *testing.T) {
+func TestUserService_RemoveUserByName(t *testing.T) {
 	const mockName = "tony"
 	const mockCount = int64(1)
 
