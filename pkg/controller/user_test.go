@@ -2,15 +2,16 @@ package controller
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/zhulinwei/go-dc/pkg/model"
 	mockService "github.com/zhulinwei/go-dc/pkg/service/mock"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"io/ioutil"
-	"net/http/httptest"
-	"testing"
 )
 
 func TestUserController_QueryUserByName(t *testing.T) {
@@ -27,10 +28,10 @@ func TestUserController_QueryUserByName(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	mockUserService := mockService.NewMockIUserService(mockCtrl)
-	mockUserService.EXPECT().QueryUserByName(mockName).Return(model.UserDB{ Test1ID: mockObjectId, Age: 18, Name: mockName})
+	mockUserService.EXPECT().QueryUserByName(mockName).Return(model.UserDB{ID: mockObjectId, Age: 18, Name: mockName})
 
 	mockUserController := UserController{
-		userService:mockUserService,
+		userService: mockUserService,
 	}
 	route.GET(mockUrl, mockUserController.QueryUserByName)
 	request := httptest.NewRequest(mockMethod, "/tony", nil)

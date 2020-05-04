@@ -14,6 +14,7 @@ type IUserController interface {
 	SaveUser(ctx *gin.Context)
 	BulkSaveUser(ctx *gin.Context)
 	QueryUserByName(ctx *gin.Context)
+	QueryUsersByName(ctx *gin.Context)
 	UpdateUserByName(ctx *gin.Context)
 	RemoveUserByName(ctx *gin.Context)
 }
@@ -47,6 +48,7 @@ func (ctrl UserController) SaveUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"id": saveID})
 }
 
+// Bulk Create
 func (ctrl UserController) BulkSaveUser (ctx *gin.Context) {
 	var users []model.UserRequest
 	if err := ctx.ShouldBind(&users); err != nil {
@@ -55,16 +57,25 @@ func (ctrl UserController) BulkSaveUser (ctx *gin.Context) {
 	}
 	log.Info("gin bind users success", log.Reflect("users", users))
 	// 调用服务层逻辑
-	saveID := ctrl.userService.BulkSaveUser(users)
+	saveCount := ctrl.userService.BulkSaveUser(users)
+
 	// 返回处理结果
-	ctx.JSON(http.StatusOK, gin.H{"id": saveID})
+	ctx.JSON(http.StatusOK, gin.H{"saveCount": saveCount})
 }
 
-// Read
+// Read And Return Single User
 func (ctrl UserController) QueryUserByName(ctx *gin.Context) {
 	name := ctx.Param("name")
-	result := ctrl.userService.QueryUserByName(name)
-	ctx.JSON(http.StatusOK, result)
+	// 可以进一步判断user是否为nil值
+	user := ctrl.userService.QueryUserByName(name)
+	ctx.JSON(http.StatusOK, user)
+}
+
+// Read And Return Multiple User
+func (ctrl UserController) QueryUsersByName(ctx *gin.Context) {
+	name := ctx.Param("name")
+	users := ctrl.userService.QueryUsersByName(name)
+	ctx.JSON(http.StatusOK, users)
 }
 
 // Update

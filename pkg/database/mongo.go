@@ -1,13 +1,14 @@
 package database
 
 import (
+	"log"
+	"sync"
+
 	"github.com/zhulinwei/go-dc/pkg/config"
 	"github.com/zhulinwei/go-dc/pkg/util"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"log"
-	"sync"
 )
 
 var mongoOnce sync.Once

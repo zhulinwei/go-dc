@@ -1,17 +1,18 @@
 package main
 
 import (
-	"github.com/zhulinwei/go-dc/pkg/rpc"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zhulinwei/go-dc/pkg/config"
 	"github.com/zhulinwei/go-dc/pkg/router"
+	"github.com/zhulinwei/go-dc/pkg/rpc"
 	"github.com/zhulinwei/go-dc/pkg/util/log"
 )
 
 func main() {
+	// 启动rpc服务
 	go rpc.GRPCRun(config.ServerConfig().GrpcPort)
 
 	route := gin.New()

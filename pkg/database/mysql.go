@@ -2,10 +2,11 @@ package database
 
 import (
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/zhulinwei/go-dc/pkg/config"
 	"log"
 	"sync"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/zhulinwei/go-dc/pkg/config"
 )
 
 var mysqlOnce sync.Once

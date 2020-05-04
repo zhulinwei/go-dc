@@ -1,10 +1,11 @@
 package cache
 
 import (
-	"github.com/go-redis/redis"
-	"github.com/zhulinwei/go-dc/pkg/config"
 	"log"
 	"sync"
+
+	"github.com/go-redis/redis"
+	"github.com/zhulinwei/go-dc/pkg/config"
 )
 
 var redisOnce sync.Once

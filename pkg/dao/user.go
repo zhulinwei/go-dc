@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"context"
+
 	"github.com/zhulinwei/go-dc/pkg/database"
 	"github.com/zhulinwei/go-dc/pkg/model"
 	"github.com/zhulinwei/go-dc/pkg/util"
@@ -11,9 +13,10 @@ import (
 )
 
 type IUserDao interface {
-	QueryUserByName(name string) model.UserDB
+	QueryUserByName(name string) (*model.UserDB, error)
+	QueryUsersByName(name string) ([]model.UserDB, error)
 	SaveUser(user model.UserRequest) *mongo.InsertOneResult
-	BulkSaveUser(users []model.UserRequest) *mongo.InsertManyResult
+	BulkSaveUser(users []model.UserRequest) *mongo.BulkWriteResult
 	RemoveUserByName(name string) *mongo.DeleteResult
 	UpdateUserByName(oldName, newName string) *mongo.UpdateResult
 }
@@ -39,43 +42,54 @@ func (userDao UserDao) SaveUser(user model.UserRequest) *mongo.InsertOneResult {
 	return result
 }
 
-
-func (userDao UserDao) BulkSaveUser(users []model.UserRequest) *mongo.InsertManyResult {
-	//var err error
-	var result *mongo.InsertManyResult
-	// insert documents {name: "Alice"} and {name: "Bob"}
-	// set the Ordered option to false to allow both operations to happen even if one of them errors
-	//docs := []interface{}{
-	//	bson.D{{"name", "Alice"}},
-	//	bson.D{{"name", "Bob"}},
-	//}
-	// SetOrdered为false指的保存失败的数据不会影响正常保存的数据
-	//opts := options.InsertMany().SetOrdered(false)
-	//if result, err = userDao.UserCollection.InsertMany(util.CommonContent(), []interface{}{users}, opts); err != nil {
-	//	log.Error("userDao bulk save user fail", log.String("error", err.Error()))
-	//}
-
+func (userDao UserDao) BulkSaveUser(users []model.UserRequest) *mongo.BulkWriteResult {
 	var models []mongo.WriteModel
 	for i := 0; i < len(users); i++ {
-		modelx := mongo.NewInsertOneModel()
-		modelx.SetDocument(users[i])
-		models = append(models, modelx)
+		models = append(models, mongo.NewInsertOneModel().SetDocument(users[i]))
 	}
-	opts2 := options.BulkWrite().SetOrdered(false)
-	_, _ = userDao.UserCollection.BulkWrite(util.CommonContent(), models, opts2)
-
+	opts := options.BulkWrite().SetOrdered(false)
+	result, err := userDao.UserCollection.BulkWrite(util.CommonContent(), models, opts)
+	if err != nil {
+		log.Error("bulk save user fail", log.Reflect("error", err.Error()))
+		return nil
+	}
 	return result
 }
 
+func (userDao UserDao) QueryUserByName(name string) (*model.UserDB, error) {
+	var user = new(model.UserDB)
+	err := userDao.UserCollection.FindOne(util.CommonContent(), bson.D{{"name", name}}).Decode(&user)
 
-func (userDao UserDao) QueryUserByName(name string) model.UserDB {
-	var err error
-	var user model.UserDB
-
-	if err = userDao.UserCollection.FindOne(util.CommonContent(), bson.D{{"name", name}}).Decode(&user); err != nil {
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
 		log.Error("userDao find user fail", log.String("error", err.Error()))
+		return nil, err
 	}
-	return user
+	return user, nil
+}
+
+func (userDao UserDao) QueryUsersByName(name string) ([]model.UserDB, error) {
+	ops := &options.FindOptions{}
+	cursor, err := userDao.UserCollection.Find(util.CommonContent(), bson.D{{"name", name}}, ops)
+
+	if err != nil {
+		log.Error("userDao find user fail", log.String("error", err.Error()))
+		return nil, err
+	}
+
+	var users []model.UserDB
+	for cursor.Next(context.TODO()) {
+		var user model.UserDB
+		err := cursor.Decode(&user)
+		if err != nil {
+			log.Error("userDao cursor error", log.String("error", err.Error()))
+			return nil, nil
+		}
+		users = append(users, user)
+	}
+	return users, nil
 }
 
 func (userDao UserDao) UpdateUserByName(oldName, newName string) *mongo.UpdateResult {

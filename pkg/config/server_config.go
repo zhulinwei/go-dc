@@ -1,10 +1,11 @@
 package config
 
 import (
-	"github.com/zhulinwei/go-dc/pkg/model"
-	"github.com/zhulinwei/go-dc/pkg/util"
 	"log"
 	"sync"
+
+	"github.com/zhulinwei/go-dc/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/util"
 )
 
 const (
@@ -23,7 +24,7 @@ func ServerConfig() model.ServerConfig {
 	return serverConfig
 }
 
-func parseServerConfig(){
+func parseServerConfig() {
 	serverConfigMutex.Lock()
 	defer serverConfigMutex.Unlock()
 
@@ -41,4 +42,3 @@ func parseServerConfig(){
 	}
 	isServerConfigParseFinish = true
 }
-

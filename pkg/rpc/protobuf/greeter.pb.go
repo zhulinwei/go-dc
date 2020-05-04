@@ -102,8 +102,9 @@ func (m *HelloReply) GetMessage() string {
 }
 
 func init() {
-	proto.RegisterType((*HelloRequest)(nil), "greeter.HelloRequest")
-	proto.RegisterType((*HelloReply)(nil), "greeter.HelloReply")
+	// TODO 暂时注释，待后续研究
+	// proto.RegisterType((*HelloRequest)(nil), "greeter.HelloRequest")
+	// proto.RegisterType((*HelloReply)(nil), "greeter.HelloReply")
 }
 
 func init() { proto.RegisterFile("proto/greeter.proto", fileDescriptor_8a2d8b56b5ea0dd4) }
