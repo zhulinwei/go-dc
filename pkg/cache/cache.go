@@ -66,5 +66,7 @@ func (cache Cache) init() {
 				cache.clientMap[redisConfig.Name] = client
 			}(redisConfig, &wg)
 		}
+
+		wg.Wait()
 	})
 }
