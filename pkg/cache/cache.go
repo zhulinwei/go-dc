@@ -4,59 +4,67 @@ import (
 	"log"
 	"sync"
 
+	"github.com/zhulinwei/go-dc/pkg/model"
+
 	"github.com/go-redis/redis"
 	"github.com/zhulinwei/go-dc/pkg/config"
 )
 
-var redisOnce sync.Once
-var redisMutex sync.Mutex
-var redisClientMap map[string]*redis.Client
+const (
+	cacheKey = "cache"
+)
 
 type ICache interface {
 	Client() *redis.Client
 }
 
 type Cache struct {
-	ClientMap map[string]*redis.Client
+	once      sync.Once
+	configs   []model.ReidsConfig
+	clientMap map[string]*redis.Client
 }
 
-func BuildCache() Cache {
-	initCache()
-	return Cache{
-		ClientMap: redisClientMap,
+var cache *Cache
+
+func BuildCache() ICache {
+	if cache == nil {
+		cache := Cache{configs: config.ServerConfig().Redis}
+		cache.init()
 	}
+
+	return cache
 }
 
 func (cache Cache) Client() *redis.Client {
-	return cache.ClientMap["cache"]
+	return cache.clientMap[cacheKey]
 }
 
-func initCache() {
-	redisConfigs := config.ServerConfig().Redis
-	redisOnce.Do(func() {
-		redisMutex.Lock()
-		defer redisMutex.Unlock()
+func (cache Cache) init() {
+	cache.once.Do(func() {
+		var wg sync.WaitGroup
+		length := len(cache.configs)
+		cache.clientMap = make(map[string]*redis.Client, length)
 
-		redisClientMap = make(map[string]*redis.Client, len(redisConfigs))
-		for _, redisConfig := range redisConfigs {
-			var err error
-			var redisOptions *redis.Options
+		for _, redisConfig := range cache.configs {
 
-			// 解析redis链接地址
-			if redisOptions, err = redis.ParseURL(redisConfig.Addr); err != nil {
-				log.Printf("redis parse config failed: %v", err)
-				return
-			}
+			go func(config model.ReidsConfig, wg *sync.WaitGroup) {
+				defer wg.Done()
 
-			// 连接redis数据库
-			client := redis.NewClient(redisOptions)
-			if _, err := client.Ping().Result(); err != nil {
-				log.Printf("redis ping failed: %v", err)
-				return
-			}
-
-			// 保存mongodb客户端
-			redisClientMap[redisConfig.Name] = client
+				// 解析redis链接地址
+				redisOptions, err := redis.ParseURL(redisConfig.Addr)
+				if err != nil {
+					log.Printf("redis parse config failed: %v", err.Error())
+					return
+				}
+				// 连接redis数据库
+				client := redis.NewClient(redisOptions)
+				if _, err := client.Ping().Result(); err != nil {
+					log.Printf("redis ping failed: %v", err.Error())
+					return
+				}
+				// 保存mongodb客户端
+				cache.clientMap[redisConfig.Name] = client
+			}(redisConfig, &wg)
 		}
 	})
 }

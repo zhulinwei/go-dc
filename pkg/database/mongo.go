@@ -56,9 +56,10 @@ func (mongodb MongoDB) init() {
 
 		for _, mongoConfig := range mongodb.configs {
 
-			go func(config model.MongoConfig, work *sync.WaitGroup) {
-				clientOptions := options.Client().ApplyURI(config.Addr)
+			go func(config model.MongoConfig, wg *sync.WaitGroup) {
+				defer wg.Done()
 
+				clientOptions := options.Client().ApplyURI(config.Addr)
 				mongoClient, err := mongo.Connect(util.CommonContent(), clientOptions)
 				if err != nil {
 					log.Error("mongodb connection fail", log.String("error", err.Error()))
