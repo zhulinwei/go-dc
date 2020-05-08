@@ -4,12 +4,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/zhulinwei/go-dc/pkg/rpc"
-
-	"github.com/zhulinwei/go-dc/pkg/config"
-
 	"github.com/gin-gonic/gin"
+	"github.com/zhulinwei/go-dc/pkg/config"
 	"github.com/zhulinwei/go-dc/pkg/router"
+	"github.com/zhulinwei/go-dc/pkg/rpc"
 	"github.com/zhulinwei/go-dc/pkg/util/log"
 )
 
