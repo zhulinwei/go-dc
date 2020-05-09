@@ -1,10 +1,11 @@
 package rpc
 
 import (
-	"github.com/zhulinwei/go-dc/pkg/rpc/protobuf"
-	"google.golang.org/grpc"
 	"log"
 	"net"
+
+	"github.com/zhulinwei/go-dc/pkg/rpc/protobuf"
+	"google.golang.org/grpc"
 )
 
 func GRPCRun(port string) {

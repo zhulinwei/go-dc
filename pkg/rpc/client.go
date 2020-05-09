@@ -1,10 +1,11 @@
 package rpc
 
 import (
-	"github.com/zhulinwei/go-dc/pkg/config"
-	"google.golang.org/grpc"
-	"log"
 	"sync"
+
+	"github.com/zhulinwei/go-dc/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/util/log"
+	"google.golang.org/grpc"
 )
 
 var grpcOnce sync.Once
@@ -46,7 +47,7 @@ func initGrpc() {
 			var err error
 			var client *grpc.ClientConn
 			if client, err = grpc.Dial(grpcConfig.Addr, grpc.WithInsecure()); err != nil {
-				log.Fatal("grpc dial fail: %v", err)
+				log.Error("grpc dial fail: %v", log.String("error", err.Error()))
 				return
 			}
 			grpcClientMap[grpcConfig.Name] = client
