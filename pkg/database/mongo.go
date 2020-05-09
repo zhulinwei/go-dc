@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	databaseKey    = "db"
+	databaseKey    = "db1"
 	databaseName   = "test_database"
 	collectionName = "test_collection"
 )
@@ -35,18 +35,17 @@ var mongodb *MongoDB
 
 func BuildMongoDB() IMongoDB {
 	if mongodb == nil {
-		mongodb := MongoDB{configs: config.ServerConfig().MongoDB}
+		mongodb = &MongoDB{configs: config.ServerConfig().MongoDB}
 		mongodb.init()
 	}
-
 	return mongodb
 }
 
-func (mongodb MongoDB) UserCollection() *mongo.Collection {
+func (mongodb *MongoDB) UserCollection() *mongo.Collection {
 	return mongodb.clientMap[databaseKey].Database(databaseName).Collection(collectionName)
 }
 
-func (mongodb MongoDB) init() {
+func (mongodb *MongoDB) init() {
 	mongodb.once.Do(func() {
 		var wg sync.WaitGroup
 

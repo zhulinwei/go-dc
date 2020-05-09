@@ -2,7 +2,6 @@ package util
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"time"
@@ -35,7 +34,6 @@ func ParseServerConfig(filePath string) (model.ServerConfig, error) {
 	var fileBytes []byte
 	var serverConfig model.ServerConfig
 	if fileBytes, err = ioutil.ReadFile(filePath); err != nil {
-		fmt.Println(err)
 		return serverConfig, err
 	}
 	if err = yaml.Unmarshal(fileBytes, &serverConfig); err != nil {

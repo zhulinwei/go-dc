@@ -28,7 +28,7 @@ var cache *Cache
 
 func BuildCache() ICache {
 	if cache == nil {
-		cache := Cache{configs: config.ServerConfig().Redis}
+		cache = &Cache{configs: config.ServerConfig().Redis}
 		cache.init()
 	}
 
@@ -43,6 +43,7 @@ func (cache Cache) init() {
 	cache.once.Do(func() {
 		var wg sync.WaitGroup
 		length := len(cache.configs)
+		wg.Add(length)
 		cache.clientMap = make(map[string]*redis.Client, length)
 
 		for _, redisConfig := range cache.configs {

@@ -10,8 +10,8 @@ import (
 
 const (
 	externalConfigPath = "/var/config.yaml"
-	// defaultConfigPath  = "./configs/config.yaml"
-	defaultConfigPath = "/configs/config.yaml"
+	defaultConfigPath  = "./configs/config.yaml"
+	// defaultConfigPath = "/configs/config.yaml"
 )
 
 var serverConfig model.ServerConfig
