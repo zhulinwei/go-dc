@@ -6,14 +6,14 @@ type ServerConfig struct {
 	Mode     string        `yaml:"mode"`
 	Grpc     []GrpcConfig  `yaml:"grpc"`
 	MySQL    []MySQLConfig `yaml:"mysql"`
-	Redis    []ReidsConfig `yaml:"redis"`
+	Redis    []RedisConfig `yaml:"redis"`
 	MongoDB  []MongoConfig `yaml:"mongo"`
 	HttpPort string        `yaml:"httpPort"`
 	GrpcPort string        `yaml:"grpcPort"`
 }
 
 type LogConfig struct {
-	Level         int    `yaml:"level"`
+	Level         int  `yaml:"level"`
 	DisableCaller bool `yaml:"disableCaller"`
 }
 
@@ -28,7 +28,7 @@ type MySQLConfig struct {
 	Addr string `yaml:"addr"`
 }
 
-type ReidsConfig struct {
+type RedisConfig struct {
 	DB       int    `yaml:"db"`
 	Name     string `yaml:"name"`
 	Addr     string `yaml:"addr"`

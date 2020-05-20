@@ -32,6 +32,6 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	if err := server.ListenAndServe(); err != nil {
-		log.Info("server run failed", log.String("err", err.Error()))
+		log.Error("server run failed", log.String("err", err.Error()))
 	}
 }

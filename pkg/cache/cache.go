@@ -20,7 +20,7 @@ type ICache interface {
 
 type Cache struct {
 	once      sync.Once
-	configs   []model.ReidsConfig
+	configs   []model.RedisConfig
 	clientMap map[string]*redis.Client
 }
 
@@ -48,7 +48,7 @@ func (cache Cache) init() {
 
 		for _, redisConfig := range cache.configs {
 
-			go func(config model.ReidsConfig, wg *sync.WaitGroup) {
+			go func(config model.RedisConfig, wg *sync.WaitGroup) {
 				defer wg.Done()
 
 				// 解析redis链接地址
