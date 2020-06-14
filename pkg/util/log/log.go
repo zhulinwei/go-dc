@@ -22,8 +22,8 @@ func Warn(msg string, fields ...zapcore.Field) {
 	logger.Warn(msg, fields...)
 }
 
-func Error(msg string, fields zapcore.Field) {
-	logger.Error(msg, fields)
+func Error(msg string, fields ...zapcore.Field) {
+	logger.Error(msg, fields...)
 }
 
 func String(key, value string) zapcore.Field {

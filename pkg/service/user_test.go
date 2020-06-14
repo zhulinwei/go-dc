@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 	mockDao "github.com/zhulinwei/go-dc/pkg/dao/mock"
 	"github.com/zhulinwei/go-dc/pkg/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"gopkg.in/go-playground/assert.v1"
 )
 
 func TestUserService_SaveUser(t *testing.T) {
@@ -43,9 +43,10 @@ func TestUserService_QueryUserByName(t *testing.T) {
 		UserDao: mockUserDao,
 	}
 	mockUserDao.EXPECT().QueryUserByName(mockName).Return(&model.UserDB{ID: mockObjectId, Age: 18, Name: "tony"}, nil)
-	realResult := mockUserService.QueryUserByName(mockName)
+	realResult, err := mockUserService.QueryUserByName(mockName)
 
 	// assert result
+	assert.NoError(t, err)
 	assert.Equal(t, mockName, realResult.Name)
 }
 

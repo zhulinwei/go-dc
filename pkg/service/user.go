@@ -9,8 +9,8 @@ import (
 type IUserService interface {
 	SaveUser(user model.UserRequest) interface{}
 	BulkSaveUser(users []model.UserRequest) int64
-	QueryUserByName(name string) *model.UserDB
-	QueryUsersByName(name string) []model.UserDB
+	QueryUserByName(name string) (*model.UserDB, error)
+	QueryUsersByName(name string) ([]model.UserDB, error)
 	RemoveUserByName(name string) interface{}
 	UpdateUserByName(oldName, newName string) interface{}
 }
@@ -38,14 +38,12 @@ func (service UserService) BulkSaveUser(users []model.UserRequest) int64 {
 }
 
 // query user
-func (service UserService) QueryUserByName(name string) *model.UserDB {
-	user, _ := service.UserDao.QueryUserByName(name)
-	return user
+func (service UserService) QueryUserByName(name string) (*model.UserDB, error) {
+	return service.UserDao.QueryUserByName(name)
 }
 
-func (service UserService) QueryUsersByName(name string) []model.UserDB {
-	users, _ := service.UserDao.QueryUsersByName(name)
-	return users
+func (service UserService) QueryUsersByName(name string) ([]model.UserDB, error) {
+	return service.UserDao.QueryUsersByName(name)
 }
 
 func (service UserService) UpdateUserByName(oldName, newName string) interface{} {

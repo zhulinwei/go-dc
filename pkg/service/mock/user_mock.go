@@ -62,11 +62,12 @@ func (mr *MockIUserServiceMockRecorder) BulkSaveUser(users interface{}) *gomock.
 }
 
 // QueryUserByName mocks base method
-func (m *MockIUserService) QueryUserByName(name string) *model.UserDB {
+func (m *MockIUserService) QueryUserByName(name string) (*model.UserDB, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryUserByName", name)
 	ret0, _ := ret[0].(*model.UserDB)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // QueryUserByName indicates an expected call of QueryUserByName
@@ -76,11 +77,12 @@ func (mr *MockIUserServiceMockRecorder) QueryUserByName(name interface{}) *gomoc
 }
 
 // QueryUsersByName mocks base method
-func (m *MockIUserService) QueryUsersByName(name string) []model.UserDB {
+func (m *MockIUserService) QueryUsersByName(name string) ([]model.UserDB, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryUsersByName", name)
 	ret0, _ := ret[0].([]model.UserDB)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // QueryUsersByName indicates an expected call of QueryUsersByName

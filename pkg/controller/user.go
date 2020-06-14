@@ -49,7 +49,7 @@ func (ctrl UserController) SaveUser(ctx *gin.Context) {
 }
 
 // Bulk Create
-func (ctrl UserController) BulkSaveUser (ctx *gin.Context) {
+func (ctrl UserController) BulkSaveUser(ctx *gin.Context) {
 	var users []model.UserRequest
 	if err := ctx.ShouldBind(&users); err != nil {
 		log.Error("gin bind users error", log.String("error", err.Error()))
@@ -67,14 +67,24 @@ func (ctrl UserController) BulkSaveUser (ctx *gin.Context) {
 func (ctrl UserController) QueryUserByName(ctx *gin.Context) {
 	name := ctx.Param("name")
 	// 可以进一步判断user是否为nil值
-	user := ctrl.userService.QueryUserByName(name)
+	user, err := ctrl.userService.QueryUserByName(name)
+	if err != nil {
+		log.Error("query user fail", log.String("error", err.Error()))
+		ctx.JSON(http.StatusInternalServerError, nil)
+		return
+	}
 	ctx.JSON(http.StatusOK, user)
 }
 
 // Read And Return Multiple User
 func (ctrl UserController) QueryUsersByName(ctx *gin.Context) {
 	name := ctx.Param("name")
-	users := ctrl.userService.QueryUsersByName(name)
+	users, err := ctrl.userService.QueryUsersByName(name)
+	if err != nil {
+		log.Error("query user fail", log.String("error", err.Error()))
+		ctx.JSON(http.StatusInternalServerError, nil)
+		return
+	}
 	ctx.JSON(http.StatusOK, users)
 }
 
