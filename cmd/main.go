@@ -31,6 +31,9 @@ func main() {
 		// 请求头的最大字节数
 		MaxHeaderBytes: 1 << 20,
 	}
+	log.Info("server start run!",
+		log.String("name", config.ServerConfig().Name),
+		log.String("port", config.ServerConfig().HttpPort))
 	if err := server.ListenAndServe(); err != nil {
 		log.Error("server run failed", log.String("err", err.Error()))
 	}
