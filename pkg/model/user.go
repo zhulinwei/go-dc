@@ -11,12 +11,12 @@ type UserDB struct {
 }
 
 type UserRequest struct {
-	Age  int    `json:"age" binding:"required"`
+	Age  int    `json:"age" binding:"required,min=0"`
 	Name string `json:"name" binding:"required"`
 }
 
 type UserResponse struct {
 	ID   primitive.ObjectID `json:"_id"`
-	Age  int              `json:"age"`
+	Age  int                `json:"age"`
 	Name string             `json:"name"`
 }

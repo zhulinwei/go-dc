@@ -15,10 +15,10 @@ import (
 type IUserDao interface {
 	QueryUserByName(name string) (*model.UserDB, error)
 	QueryUsersByName(name string) ([]model.UserDB, error)
-	SaveUser(user model.UserRequest) *mongo.InsertOneResult
-	BulkSaveUser(users []model.UserRequest) *mongo.BulkWriteResult
-	RemoveUserByName(name string) *mongo.DeleteResult
-	UpdateUserByName(oldName, newName string) *mongo.UpdateResult
+	SaveUser(user model.UserRequest) (*mongo.InsertOneResult, error)
+	BulkSaveUser(users []model.UserRequest) (*mongo.BulkWriteResult, error)
+	RemoveUserByName(name string) (*mongo.DeleteResult, error)
+	UpdateUserByName(oldName, newName string) (*mongo.UpdateResult, error)
 }
 
 type UserDao struct {
@@ -31,17 +31,18 @@ func BuildUserDao() IUserDao {
 	}
 }
 
-func (userDao UserDao) SaveUser(user model.UserRequest) *mongo.InsertOneResult {
+func (userDao UserDao) SaveUser(user model.UserRequest) (*mongo.InsertOneResult, error) {
 	var err error
 	var result *mongo.InsertOneResult
 	if result, err = userDao.UserCollection.InsertOne(util.CommonContent(), user); err != nil {
 		log.Error("userDao save user fail", log.String("error", err.Error()))
+		return nil, err
 	}
 	log.Debug("save user success", log.Reflect("result", result))
-	return result
+	return result, nil
 }
 
-func (userDao UserDao) BulkSaveUser(users []model.UserRequest) *mongo.BulkWriteResult {
+func (userDao UserDao) BulkSaveUser(users []model.UserRequest) (*mongo.BulkWriteResult, error) {
 	var models []mongo.WriteModel
 	for i := 0; i < len(users); i++ {
 		models = append(models, mongo.NewInsertOneModel().SetDocument(users[i]))
@@ -50,9 +51,9 @@ func (userDao UserDao) BulkSaveUser(users []model.UserRequest) *mongo.BulkWriteR
 	result, err := userDao.UserCollection.BulkWrite(util.CommonContent(), models, opts)
 	if err != nil {
 		log.Error("bulk save user fail", log.Reflect("error", err.Error()))
-		return nil
+		return nil, err
 	}
-	return result
+	return result, nil
 }
 
 func (userDao UserDao) QueryUserByName(name string) (*model.UserDB, error) {
@@ -91,20 +92,22 @@ func (userDao UserDao) QueryUsersByName(name string) ([]model.UserDB, error) {
 	return users, nil
 }
 
-func (userDao UserDao) UpdateUserByName(oldName, newName string) *mongo.UpdateResult {
+func (userDao UserDao) UpdateUserByName(oldName, newName string) (*mongo.UpdateResult, error) {
 	var err error
 	var result *mongo.UpdateResult
 	if result, err = userDao.UserCollection.UpdateOne(util.CommonContent(), bson.M{"name": oldName}, bson.M{"$set": bson.M{"name": newName}}); err != nil {
 		log.Error("userDao update user fail", log.String("error", err.Error()))
+		return nil, err
 	}
-	return result
+	return result, nil
 }
 
-func (userDao UserDao) RemoveUserByName(name string) *mongo.DeleteResult {
+func (userDao UserDao) RemoveUserByName(name string) (*mongo.DeleteResult, error) {
 	var err error
 	var result *mongo.DeleteResult
 	if result, err = userDao.UserCollection.DeleteOne(util.CommonContent(), bson.M{"name": name}); err != nil {
 		log.Error("userDao delete user fail", log.String("error", err.Error()))
+		return nil, err
 	}
-	return result
+	return result, nil
 }

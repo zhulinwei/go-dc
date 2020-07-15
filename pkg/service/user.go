@@ -29,12 +29,20 @@ func BuildUserService() IUserService {
 
 // save user
 func (service UserService) SaveUser(user model.UserRequest) interface{} {
-	return service.UserDao.SaveUser(user).InsertedID
+	if result, err := service.UserDao.SaveUser(user); err != nil {
+		return nil
+	} else {
+		return result.InsertedID
+	}
 }
 
 // bulk save user
 func (service UserService) BulkSaveUser(users []model.UserRequest) int64 {
-	return service.UserDao.BulkSaveUser(users).InsertedCount
+	result, err := service.UserDao.BulkSaveUser(users)
+	if err != nil {
+		return 0
+	}
+	return result.InsertedCount
 }
 
 // query user
@@ -47,9 +55,19 @@ func (service UserService) QueryUsersByName(name string) ([]model.UserDB, error)
 }
 
 func (service UserService) UpdateUserByName(oldName, newName string) interface{} {
-	return service.UserDao.UpdateUserByName(oldName, newName).ModifiedCount
+	result, err := service.UserDao.UpdateUserByName(oldName, newName)
+	if err != nil {
+		return nil
+	}
+
+	return result.ModifiedCount
 }
 
 func (service UserService) RemoveUserByName(name string) interface{} {
-	return service.UserDao.RemoveUserByName(name).DeletedCount
+	result, err := service.UserDao.RemoveUserByName(name)
+	if err != nil {
+		return nil
+	}
+
+	return result.DeletedCount
 }

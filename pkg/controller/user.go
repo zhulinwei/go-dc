@@ -3,6 +3,8 @@ package controller
 import (
 	"net/http"
 
+	"github.com/zhulinwei/go-dc/pkg/util"
+
 	"github.com/gin-gonic/gin"
 	"github.com/zhulinwei/go-dc/pkg/model"
 	"github.com/zhulinwei/go-dc/pkg/service"
@@ -40,13 +42,14 @@ func (ctrl UserController) SaveUser(ctx *gin.Context) {
 	var user model.UserRequest
 	if err := ctx.ShouldBind(&user); err != nil {
 		log.Error("gin bind user error", log.String("error", err.Error()))
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+		ctx.JSON(http.StatusBadRequest, model.Response{Code: -1, Msg: util.ParserErrorMsg(err)})
 		return
 	}
 	// 调用服务层逻辑
 	saveID := ctrl.userService.SaveUser(user)
 	// 返回处理结果
-	ctx.JSON(http.StatusOK, gin.H{"id": saveID})
+	ctx.JSON(http.StatusOK, model.Response{Code: 0, Msg: "success", Data: gin.H{"id": saveID}})
 }
 
 // Bulk Create
