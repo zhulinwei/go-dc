@@ -20,3 +20,7 @@ type UserResponse struct {
 	Age  int                `json:"age"`
 	Name string             `json:"name"`
 }
+
+type UsersRequest struct {
+	Users []UserRequest `json:"users" binding:"required,dive"`
+}

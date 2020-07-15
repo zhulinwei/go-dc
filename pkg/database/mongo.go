@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/zhulinwei/go-dc/pkg/config"
@@ -60,8 +59,6 @@ func (mongodb *MongoDB) init() {
 				defer wg.Done()
 
 				clientOptions := options.Client().ApplyURI(config.Addr)
-				// clientOptions.SetAuth(options.Credential{Username: "admin", Password: "admin"})
-				fmt.Println(clientOptions.Auth)
 				mongoClient, err := mongo.Connect(util.CommonContent(), clientOptions)
 				if err != nil {
 					log.Error("mongodb connection fail", log.String("error", err.Error()))

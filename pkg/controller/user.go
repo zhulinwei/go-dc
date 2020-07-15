@@ -42,7 +42,6 @@ func (ctrl UserController) SaveUser(ctx *gin.Context) {
 	var user model.UserRequest
 	if err := ctx.ShouldBind(&user); err != nil {
 		log.Error("gin bind user error", log.String("error", err.Error()))
-
 		ctx.JSON(http.StatusBadRequest, model.Response{Code: -1, Msg: util.ParserErrorMsg(err)})
 		return
 	}
@@ -54,18 +53,20 @@ func (ctrl UserController) SaveUser(ctx *gin.Context) {
 
 // Bulk Create
 func (ctrl UserController) BulkSaveUser(ctx *gin.Context) {
-	var users []model.UserRequest
-	if err := ctx.ShouldBind(&users); err != nil {
+	//	var users []model.UserRequest
+	var usersRequest model.UsersRequest
+
+	if err := ctx.ShouldBind(&usersRequest); err != nil {
 		log.Error("gin bind users error", log.String("error", err.Error()))
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, model.Response{Code: -1, Msg: util.ParserErrorMsg(err)})
 		return
 	}
-	log.Info("gin bind users success", log.Reflect("users", users))
+	log.Info("gin bind users success", log.Reflect("users", usersRequest))
 	// 调用服务层逻辑
-	saveCount := ctrl.userService.BulkSaveUser(users)
+	saveCount := ctrl.userService.BulkSaveUser(usersRequest.Users)
 
-	// 返回处理结果
-	ctx.JSON(http.StatusOK, gin.H{"saveCount": saveCount})
+	// // 返回处理结果
+	ctx.JSON(http.StatusOK, model.Response{Code: 0, Msg: "success", Data: gin.H{"saveCount": saveCount}})
 }
 
 // Read And Return Single User
@@ -78,7 +79,7 @@ func (ctrl UserController) QueryUserByName(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, nil)
 		return
 	}
-	ctx.JSON(http.StatusOK, user)
+	ctx.JSON(http.StatusOK, model.Response{Code: 0, Msg: "success", Data: user})
 }
 
 // Read And Return Multiple User
@@ -90,7 +91,7 @@ func (ctrl UserController) QueryUsersByName(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, nil)
 		return
 	}
-	ctx.JSON(http.StatusOK, users)
+	ctx.JSON(http.StatusOK, model.Response{Code: 0, Msg: "success", Data: users})
 }
 
 // Update
@@ -100,21 +101,18 @@ func (ctrl UserController) UpdateUserByName(ctx *gin.Context) {
 	var user model.UserRequest
 	if err := ctx.ShouldBind(&user); err != nil {
 		log.Error("gin bind error", log.String("error", err.Error()))
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, model.Response{Code: -1, Msg: util.ParserErrorMsg(err)})
 		return
 	}
 	updateCount := ctrl.userService.UpdateUserByName(oldName, user.Name)
-	ctx.JSON(http.StatusOK, gin.H{
-		"updateCount": updateCount,
-	})
+
+	ctx.JSON(http.StatusOK, model.Response{Code: 0, Msg: "success", Data: gin.H{"updateCount": updateCount}})
 }
 
 // Delete
 func (ctrl UserController) RemoveUserByName(ctx *gin.Context) {
 	name := ctx.Param("name")
 
-	DeletedCount := ctrl.userService.RemoveUserByName(name)
-	ctx.JSON(http.StatusOK, gin.H{
-		"DeletedCount": DeletedCount,
-	})
+	deletedCount := ctrl.userService.RemoveUserByName(name)
+	ctx.JSON(http.StatusOK, model.Response{Code: 0, Msg: "success", Data: gin.H{"deletedCount": deletedCount}})
 }

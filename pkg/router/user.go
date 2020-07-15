@@ -31,6 +31,6 @@ func (userRouter UserRouter) InitRouter(r *gin.Engine) {
 	// 单个用户
 	route.GET("/v1/users/:name", userRouter.UserController.QueryUserByName)
 	route.GET("/v2/users/:name", userRouter.UserController.QueryUsersByName)
-	route.PUT("/users/:name", userRouter.UserController.UpdateUserByName)
-	route.DELETE("/users/:name", userRouter.UserController.RemoveUserByName)
+	route.PUT("/v1/users/:name", userRouter.UserController.UpdateUserByName)
+	route.DELETE("/v1/users/:name", userRouter.UserController.RemoveUserByName)
 }
