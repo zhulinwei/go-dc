@@ -56,11 +56,6 @@ func ParserErrorMsg(err error) string {
 	// validator validation error
 	if validationErrs, ok := err.(validator.ValidationErrors); ok {
 		for _, validationErr := range validationErrs {
-			fmt.Println(validationErr.Param)
-			fmt.Println(validationErr.Value)
-			fmt.Println(validationErr.Name)
-			fmt.Println(validationErr.Kind)
-			fmt.Println(validationErr.Field)
 			switch validationErr.Tag {
 			case "required":
 				return fmt.Sprintf("field '%s' was required, can not be empty.\n", strings.ToLower(validationErr.Name))
