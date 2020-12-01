@@ -65,11 +65,12 @@ func (mr *MockIUserDaoMockRecorder) QueryUsersByName(name interface{}) *gomock.C
 }
 
 // SaveUser mocks base method
-func (m *MockIUserDao) SaveUser(user model.UserRequest) *mongo.InsertOneResult {
+func (m *MockIUserDao) SaveUser(user model.UserRequest) (*mongo.InsertOneResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SaveUser", user)
 	ret0, _ := ret[0].(*mongo.InsertOneResult)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // SaveUser indicates an expected call of SaveUser
@@ -79,11 +80,12 @@ func (mr *MockIUserDaoMockRecorder) SaveUser(user interface{}) *gomock.Call {
 }
 
 // BulkSaveUser mocks base method
-func (m *MockIUserDao) BulkSaveUser(users []model.UserRequest) *mongo.BulkWriteResult {
+func (m *MockIUserDao) BulkSaveUser(users []model.UserRequest) (*mongo.BulkWriteResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "BulkSaveUser", users)
 	ret0, _ := ret[0].(*mongo.BulkWriteResult)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // BulkSaveUser indicates an expected call of BulkSaveUser
@@ -93,11 +95,12 @@ func (mr *MockIUserDaoMockRecorder) BulkSaveUser(users interface{}) *gomock.Call
 }
 
 // RemoveUserByName mocks base method
-func (m *MockIUserDao) RemoveUserByName(name string) *mongo.DeleteResult {
+func (m *MockIUserDao) RemoveUserByName(name string) (*mongo.DeleteResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveUserByName", name)
 	ret0, _ := ret[0].(*mongo.DeleteResult)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // RemoveUserByName indicates an expected call of RemoveUserByName
@@ -107,11 +110,12 @@ func (mr *MockIUserDaoMockRecorder) RemoveUserByName(name interface{}) *gomock.C
 }
 
 // UpdateUserByName mocks base method
-func (m *MockIUserDao) UpdateUserByName(oldName, newName string) *mongo.UpdateResult {
+func (m *MockIUserDao) UpdateUserByName(oldName, newName string) (*mongo.UpdateResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateUserByName", oldName, newName)
 	ret0, _ := ret[0].(*mongo.UpdateResult)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UpdateUserByName indicates an expected call of UpdateUserByName
