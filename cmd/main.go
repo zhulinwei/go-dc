@@ -12,8 +12,7 @@ import (
 )
 
 func main() {
-	// 启动rpc服务
-	go rpc.GRPCRun(config.ServerConfig().GrpcPort)
+	log.InitLog()
 
 	route := gin.New()
 	router.InitRoute(route)
@@ -34,6 +33,9 @@ func main() {
 	log.Info("server start run!",
 		log.String("name", config.ServerConfig().Name),
 		log.String("port", config.ServerConfig().HttpPort))
+
+	// 启动rpc服务
+	go rpc.GRPCRun(config.ServerConfig().GrpcPort)
 	if err := server.ListenAndServe(); err != nil {
 		log.Error("server run failed", log.String("err", err.Error()))
 	}

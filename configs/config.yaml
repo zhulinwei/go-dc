@@ -18,7 +18,7 @@ mysql:
   - name: db1
     type: mysql
     addr: root:zhulinwei123@tcp(localhost:3306)/test_database
-  - name: db1
+  - name: db2
     type: mysql
     addr: root:zhulinwei123@tcp(localhost:3306)/test_database
 mongo:

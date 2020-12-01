@@ -34,7 +34,7 @@ func Reflect(key string, value interface{}) zapcore.Field {
 	return zap.Reflect(key, value)
 }
 
-func init() {
+func InitLog() {
 	logConfig := zap.NewProductionConfig()
 	// Error级别以下是否显示堆栈信息
 	logConfig.DisableCaller = config.ServerConfig().Log.DisableCaller

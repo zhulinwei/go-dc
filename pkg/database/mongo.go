@@ -47,28 +47,15 @@ func (mongodb *MongoDB) UserCollection() *mongo.Collection {
 
 func (mongodb *MongoDB) init() {
 	mongodb.once.Do(func() {
-		var wg sync.WaitGroup
-
-		length := len(mongodb.configs)
-		wg.Add(length)
-		mongodb.clientMap = make(map[string]*mongo.Client, length)
-
+		mongodb.clientMap = make(map[string]*mongo.Client, len(mongodb.configs))
 		for _, mongoConfig := range mongodb.configs {
-
-			go func(config model.MongoConfig, wg *sync.WaitGroup) {
-				defer wg.Done()
-
-				clientOptions := options.Client().ApplyURI(config.Addr)
-				mongoClient, err := mongo.Connect(util.CommonContent(), clientOptions)
-				if err != nil {
-					log.Error("mongodb connection fail", log.String("error", err.Error()))
-					return
-				}
-
-				mongodb.clientMap[config.Name] = mongoClient
-			}(mongoConfig, &wg)
+			clientOptions := options.Client().ApplyURI(mongoConfig.Addr)
+			mongoClient, err := mongo.Connect(util.CommonContent(), clientOptions)
+			if err != nil {
+				log.Error("mongodb connection fail", log.String("error", err.Error()))
+				panic("mongodb connection fail")
+			}
+			mongodb.clientMap[mongoConfig.Name] = mongoClient
 		}
-
-		wg.Wait()
 	})
 }
