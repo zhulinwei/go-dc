@@ -2,7 +2,6 @@ package dao
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/zhulinwei/go-dc/pkg/database"
 	"github.com/zhulinwei/go-dc/pkg/model"
@@ -19,7 +18,6 @@ type AmountDao struct {
 }
 
 func BuildAmountDao() IAmountDao {
-	fmt.Println(database.BuildMySQL().DBClient())
 	return AmountDao{
 		dbClient: database.BuildMySQL().DBClient(),
 	}
