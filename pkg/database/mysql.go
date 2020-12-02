@@ -2,52 +2,49 @@ package database
 
 import (
 	"database/sql"
-	"log"
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/zhulinwei/go-dc/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/util/log"
 )
-
-var mysqlOnce sync.Once
-var mysqlMutex sync.Mutex
-var mysqlClientMap map[string]*sql.DB
 
 type IMySQL interface {
 	DB1Client() *sql.DB
 }
 
 type MySQL struct {
+	once      sync.Once
+	configs   []model.MySQLConfig
 	ClientMap map[string]*sql.DB
 }
 
+var mysql *MySQL
+
 func BuildMySQL() IMySQL {
-	initMySQL()
-	return MySQL{
-		ClientMap: mysqlClientMap,
+	if mysql == nil {
+		mysql = &MySQL{configs: config.ServerConfig().MySQL}
+		mysql.init()
 	}
+	return mysql
 }
 
-func (mysql MySQL) DB1Client() *sql.DB {
+func (mysql *MySQL) DB1Client() *sql.DB {
 	return mysql.ClientMap["db1"]
 }
 
-func initMySQL() {
-	mysqlConfigs := config.ServerConfig().MySQL
-	mysqlOnce.Do(func() {
-		mysqlMutex.Lock()
-		defer mysqlMutex.Unlock()
-
-		mysqlClientMap = make(map[string]*sql.DB, len(mysqlConfigs))
-		for _, mysqlConfig := range mysqlConfigs {
-			var err error
-			var client *sql.DB
-			if client, err = sql.Open(mysqlConfig.Type, mysqlConfig.Addr); err != nil {
-				log.Fatalf("mysql open failed: %v", err)
+func (mysql *MySQL) init() {
+	mysql.once.Do(func() {
+		mysqlClientMap := make(map[string]*sql.DB, len(mysql.configs))
+		for _, mysqlConfig := range mysql.configs {
+			client, err := sql.Open(mysqlConfig.Type, mysqlConfig.Addr)
+			if err != nil {
+				log.Error("mysql connect fail", log.String("error", err.Error()))
 				return
 			}
 			if err = client.Ping(); err != nil {
-				log.Fatalf("mysql ping failed: %v", err)
+				log.Error("mysql ping fail", log.String("error", err.Error()))
 				return
 			}
 			// 保存mysql客户端

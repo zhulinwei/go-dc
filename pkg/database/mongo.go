@@ -4,15 +4,11 @@ import (
 	"sync"
 
 	"github.com/zhulinwei/go-dc/pkg/config"
-
+	"github.com/zhulinwei/go-dc/pkg/model"
 	"github.com/zhulinwei/go-dc/pkg/util"
 	"github.com/zhulinwei/go-dc/pkg/util/log"
-
-	"go.mongodb.org/mongo-driver/mongo/options"
-
-	"github.com/zhulinwei/go-dc/pkg/model"
-
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -52,8 +48,8 @@ func (mongodb *MongoDB) init() {
 			clientOptions := options.Client().ApplyURI(mongoConfig.Addr)
 			mongoClient, err := mongo.Connect(util.CommonContent(), clientOptions)
 			if err != nil {
-				log.Error("mongodb connection fail", log.String("error", err.Error()))
-				panic("mongodb connection fail")
+				log.Error("mongodb connect fail", log.String("error", err.Error()))
+				return
 			}
 			mongodb.clientMap[mongoConfig.Name] = mongoClient
 		}

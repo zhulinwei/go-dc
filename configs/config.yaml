@@ -17,13 +17,15 @@ redis:
 mysql:
   - name: db1
     type: mysql
-    addr: root:zhulinwei123@tcp(localhost:3306)/test_database
+    addr: root:zhulinwei123@tcp(203.195.235.155:3306)/test_database
+    # addr: root:zhulinwei123@tcp(localhost:3306)/test_database
   - name: db2
     type: mysql
     addr: root:zhulinwei123@tcp(localhost:3306)/test_database
 mongo:
   - name: db1
-    addr: mongodb://localhost:27017
+    # addr: mongodb://localhost:27017
+    addr: mongodb://admin:zhulinwei123@203.195.235.155:7002
     database: test_database
   - name: db2
     addr: mongodb://localhost:27017

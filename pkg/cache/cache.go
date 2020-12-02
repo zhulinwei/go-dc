@@ -1,13 +1,12 @@
 package cache
 
 import (
-	"log"
 	"sync"
-
-	"github.com/zhulinwei/go-dc/pkg/model"
 
 	"github.com/go-redis/redis"
 	"github.com/zhulinwei/go-dc/pkg/config"
+	"github.com/zhulinwei/go-dc/pkg/model"
+	"github.com/zhulinwei/go-dc/pkg/util/log"
 )
 
 const (
@@ -41,33 +40,23 @@ func (cache Cache) Client() *redis.Client {
 
 func (cache Cache) init() {
 	cache.once.Do(func() {
-		var wg sync.WaitGroup
-		length := len(cache.configs)
-		wg.Add(length)
-		cache.clientMap = make(map[string]*redis.Client, length)
+		cache.clientMap = make(map[string]*redis.Client, len(cache.configs))
 
 		for _, redisConfig := range cache.configs {
-
-			go func(config model.RedisConfig, wg *sync.WaitGroup) {
-				defer wg.Done()
-
-				// 解析redis链接地址
-				redisOptions, err := redis.ParseURL(redisConfig.Addr)
-				if err != nil {
-					log.Printf("redis parse config failed: %v", err.Error())
-					return
-				}
-				// 连接redis数据库
-				client := redis.NewClient(redisOptions)
-				if _, err := client.Ping().Result(); err != nil {
-					log.Printf("redis ping failed: %v", err.Error())
-					return
-				}
-				// 保存mongodb客户端
-				cache.clientMap[redisConfig.Name] = client
-			}(redisConfig, &wg)
+			// 解析redis链接地址
+			redisOptions, err := redis.ParseURL(redisConfig.Addr)
+			if err != nil {
+				log.Error("redis parse config fail", log.String("error", err.Error()))
+				return
+			}
+			// 连接redis数据库
+			client := redis.NewClient(redisOptions)
+			if _, err := client.Ping().Result(); err != nil {
+				log.Error("redis ping fail", log.String("error", err.Error()))
+				return
+			}
+			// 保存mongodb客户端
+			cache.clientMap[redisConfig.Name] = client
 		}
-
-		wg.Wait()
 	})
 }
