@@ -46,13 +46,17 @@ func (cache Cache) init() {
 			// 解析redis链接地址
 			redisOptions, err := redis.ParseURL(redisConfig.Addr)
 			if err != nil {
-				log.Error("redis parse config fail", log.String("error", err.Error()))
+				log.Error("redis parse config fail",
+					log.String("db", redisConfig.Name),
+					log.String("error", err.Error()))
 				return
 			}
 			// 连接redis数据库
 			client := redis.NewClient(redisOptions)
 			if _, err := client.Ping().Result(); err != nil {
-				log.Error("redis ping fail", log.String("error", err.Error()))
+				log.Error("redis ping fail",
+					log.String("db", redisConfig.Name),
+					log.String("error", err.Error()))
 				return
 			}
 			// 保存mongodb客户端

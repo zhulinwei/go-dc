@@ -13,10 +13,10 @@ import (
 )
 
 type IUserDao interface {
-	QueryUserByName(name string) (*model.UserDB, error)
-	QueryUsersByName(name string) ([]model.UserDB, error)
 	SaveUser(user model.UserRequest) (*mongo.InsertOneResult, error)
 	BulkSaveUser(users []model.UserRequest) (*mongo.BulkWriteResult, error)
+	QueryUserByName(name string) (*model.UserDB, error)
+	QueryUsersByName(name string) ([]model.UserDB, error)
 	RemoveUserByName(name string) (*mongo.DeleteResult, error)
 	UpdateUserByName(oldName, newName string) (*mongo.UpdateResult, error)
 }
@@ -32,9 +32,8 @@ func BuildUserDao() IUserDao {
 }
 
 func (userDao UserDao) SaveUser(user model.UserRequest) (*mongo.InsertOneResult, error) {
-	var err error
-	var result *mongo.InsertOneResult
-	if result, err = userDao.UserCollection.InsertOne(util.CommonContent(), user); err != nil {
+	result, err := userDao.UserCollection.InsertOne(util.CommonContent(), user)
+	if err != nil {
 		log.Error("userDao save user fail", log.String("error", err.Error()))
 		return nil, err
 	}
@@ -58,9 +57,7 @@ func (userDao UserDao) BulkSaveUser(users []model.UserRequest) (*mongo.BulkWrite
 
 func (userDao UserDao) QueryUserByName(name string) (*model.UserDB, error) {
 	var user = new(model.UserDB)
-	err := userDao.UserCollection.FindOne(util.CommonContent(), bson.D{{"name", name}}).Decode(&user)
-
-	if err != nil {
+	if err := userDao.UserCollection.FindOne(util.CommonContent(), bson.D{{"name", name}}).Decode(&user); err != nil {
 		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
@@ -82,8 +79,7 @@ func (userDao UserDao) QueryUsersByName(name string) ([]model.UserDB, error) {
 	var users []model.UserDB
 	for cursor.Next(context.TODO()) {
 		var user model.UserDB
-		err := cursor.Decode(&user)
-		if err != nil {
+		if err := cursor.Decode(&user); err != nil {
 			log.Error("userDao cursor error", log.String("error", err.Error()))
 			return nil, nil
 		}
@@ -93,9 +89,8 @@ func (userDao UserDao) QueryUsersByName(name string) ([]model.UserDB, error) {
 }
 
 func (userDao UserDao) UpdateUserByName(oldName, newName string) (*mongo.UpdateResult, error) {
-	var err error
-	var result *mongo.UpdateResult
-	if result, err = userDao.UserCollection.UpdateOne(util.CommonContent(), bson.M{"name": oldName}, bson.M{"$set": bson.M{"name": newName}}); err != nil {
+	result, err := userDao.UserCollection.UpdateOne(util.CommonContent(), bson.M{"name": oldName}, bson.M{"$set": bson.M{"name": newName}})
+	if err != nil {
 		log.Error("userDao update user fail", log.String("error", err.Error()))
 		return nil, err
 	}
@@ -103,9 +98,8 @@ func (userDao UserDao) UpdateUserByName(oldName, newName string) (*mongo.UpdateR
 }
 
 func (userDao UserDao) RemoveUserByName(name string) (*mongo.DeleteResult, error) {
-	var err error
-	var result *mongo.DeleteResult
-	if result, err = userDao.UserCollection.DeleteOne(util.CommonContent(), bson.M{"name": name}); err != nil {
+	result, err := userDao.UserCollection.DeleteOne(util.CommonContent(), bson.M{"name": name})
+	if err != nil {
 		log.Error("userDao delete user fail", log.String("error", err.Error()))
 		return nil, err
 	}

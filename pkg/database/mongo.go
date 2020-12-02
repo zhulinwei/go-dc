@@ -48,7 +48,9 @@ func (mongodb *MongoDB) init() {
 			clientOptions := options.Client().ApplyURI(mongoConfig.Addr)
 			mongoClient, err := mongo.Connect(util.CommonContent(), clientOptions)
 			if err != nil {
-				log.Error("mongodb connect fail", log.String("error", err.Error()))
+				log.Error("mongodb connect fail",
+					log.String("db", mongoConfig.Name),
+					log.String("error", err.Error()))
 				return
 			}
 			mongodb.clientMap[mongoConfig.Name] = mongoClient

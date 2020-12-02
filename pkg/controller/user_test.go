@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -21,31 +22,29 @@ func TestUserController_QueryUserByName(t *testing.T) {
 	const mockMethod = "GET"
 	mockObjectId := primitive.NewObjectID()
 
-	// mock request
-	route := gin.Default()
-
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
-
 	mockUserService := mockService.NewMockIUserService(mockCtrl)
-	mockUserService.EXPECT().QueryUserByName(mockName).Return(&model.UserDB{ID: mockObjectId, Age: 18, Name: mockName})
-
+	mockUserService.EXPECT().QueryUserByName(mockName).Return(&model.UserDB{ID: mockObjectId, Age: 18, Name: mockName}, nil)
 	mockUserController := UserController{
 		userService: mockUserService,
 	}
+
+	route := gin.Default()
 	route.GET(mockUrl, mockUserController.QueryUserByName)
 	request := httptest.NewRequest(mockMethod, "/tony", nil)
 	recorder := httptest.NewRecorder()
 	route.ServeHTTP(recorder, request)
-
 	body, err := ioutil.ReadAll(recorder.Result().Body)
-	assert.NoError(t, err)
 
-	var result model.UserDB
+	var result struct {
+		Data model.UserDB
+	}
 	err = json.Unmarshal(body, &result)
 	assert.NoError(t, err)
 
 	// assert result
 	assert.NoError(t, err)
-	assert.Equal(t, result.Name, mockName)
+	assert.Equal(t, http.StatusOK, recorder.Code)
+	assert.Equal(t, mockName, result.Data.Name)
 }

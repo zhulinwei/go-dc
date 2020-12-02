@@ -34,36 +34,6 @@ func (m *MockIUserDao) EXPECT() *MockIUserDaoMockRecorder {
 	return m.recorder
 }
 
-// QueryUserByName mocks base method
-func (m *MockIUserDao) QueryUserByName(name string) (*model.UserDB, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryUserByName", name)
-	ret0, _ := ret[0].(*model.UserDB)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// QueryUserByName indicates an expected call of QueryUserByName
-func (mr *MockIUserDaoMockRecorder) QueryUserByName(name interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryUserByName", reflect.TypeOf((*MockIUserDao)(nil).QueryUserByName), name)
-}
-
-// QueryUsersByName mocks base method
-func (m *MockIUserDao) QueryUsersByName(name string) ([]model.UserDB, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryUsersByName", name)
-	ret0, _ := ret[0].([]model.UserDB)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// QueryUsersByName indicates an expected call of QueryUsersByName
-func (mr *MockIUserDaoMockRecorder) QueryUsersByName(name interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryUsersByName", reflect.TypeOf((*MockIUserDao)(nil).QueryUsersByName), name)
-}
-
 // SaveUser mocks base method
 func (m *MockIUserDao) SaveUser(user model.UserRequest) (*mongo.InsertOneResult, error) {
 	m.ctrl.T.Helper()
@@ -92,6 +62,36 @@ func (m *MockIUserDao) BulkSaveUser(users []model.UserRequest) (*mongo.BulkWrite
 func (mr *MockIUserDaoMockRecorder) BulkSaveUser(users interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BulkSaveUser", reflect.TypeOf((*MockIUserDao)(nil).BulkSaveUser), users)
+}
+
+// QueryUserByName mocks base method
+func (m *MockIUserDao) QueryUserByName(name string) (*model.UserDB, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryUserByName", name)
+	ret0, _ := ret[0].(*model.UserDB)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryUserByName indicates an expected call of QueryUserByName
+func (mr *MockIUserDaoMockRecorder) QueryUserByName(name interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryUserByName", reflect.TypeOf((*MockIUserDao)(nil).QueryUserByName), name)
+}
+
+// QueryUsersByName mocks base method
+func (m *MockIUserDao) QueryUsersByName(name string) ([]model.UserDB, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryUsersByName", name)
+	ret0, _ := ret[0].([]model.UserDB)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryUsersByName indicates an expected call of QueryUsersByName
+func (mr *MockIUserDaoMockRecorder) QueryUsersByName(name interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryUsersByName", reflect.TypeOf((*MockIUserDao)(nil).QueryUsersByName), name)
 }
 
 // RemoveUserByName mocks base method

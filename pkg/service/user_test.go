@@ -20,14 +20,14 @@ func TestUserService_SaveUser(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 	mockUserDao := mockDao.NewMockIUserDao(mockCtrl)
-	mockUserDao.EXPECT().SaveUser(mockTest).Return(&mongo.InsertOneResult{InsertedID: mockObjectId})
+	mockUserDao.EXPECT().SaveUser(mockTest).Return(&mongo.InsertOneResult{InsertedID: mockObjectId}, nil)
 	mockUserService := UserService{
 		UserDao: mockUserDao,
 	}
-	realResult := mockUserService.SaveUser(mockTest)
+	err := mockUserService.SaveUser(mockTest)
 
 	// assert result
-	assert.Equal(t, mockObjectId, realResult)
+	assert.NoError(t, err)
 }
 
 func TestUserService_QueryUserByName(t *testing.T) {
@@ -63,11 +63,11 @@ func TestUserService_UpdateUserByName(t *testing.T) {
 	mockUserService := UserService{
 		UserDao: mockUserDao,
 	}
-	mockUserDao.EXPECT().UpdateUserByName(mockOldName, mockNewName).Return(&mongo.UpdateResult{ModifiedCount: mockCount})
-	realResult := mockUserService.UpdateUserByName(mockOldName, mockNewName)
+	mockUserDao.EXPECT().UpdateUserByName(mockOldName, mockNewName).Return(&mongo.UpdateResult{ModifiedCount: mockCount}, nil)
+	err := mockUserService.UpdateUserByName(mockOldName, mockNewName)
 
 	// assert result
-	assert.Equal(t, mockCount, realResult)
+	assert.NoError(t, err)
 }
 
 func TestUserService_RemoveUserByName(t *testing.T) {
@@ -80,9 +80,9 @@ func TestUserService_RemoveUserByName(t *testing.T) {
 	mockUserService := UserService{
 		UserDao: mockUserDao,
 	}
-	mockUserDao.EXPECT().RemoveUserByName(mockName).Return(&mongo.DeleteResult{DeletedCount: mockCount})
-	realResult := mockUserService.RemoveUserByName(mockName)
+	mockUserDao.EXPECT().RemoveUserByName(mockName).Return(&mongo.DeleteResult{DeletedCount: mockCount}, nil)
+	err := mockUserService.RemoveUserByName(mockName)
 
 	// assert result
-	assert.Equal(t, mockCount, realResult)
+	assert.NoError(t, err)
 }

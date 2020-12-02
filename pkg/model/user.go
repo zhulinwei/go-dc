@@ -15,6 +15,11 @@ type UserRequest struct {
 	Name string `json:"name" binding:"required"`
 }
 
+type UserAmountRequest struct {
+	Name   string  `json:"name" binding:"required"`
+	Amount float64 `json:"amount" binding:"required"`
+}
+
 type UserResponse struct {
 	ID   primitive.ObjectID `json:"_id"`
 	Age  int                `json:"age"`

@@ -7,45 +7,41 @@ import (
 )
 
 type IUserService interface {
-	SaveUser(user model.UserRequest) interface{}
-	BulkSaveUser(users []model.UserRequest) int64
+	SaveUser(user model.UserRequest) error
+	BulkSaveUser(users []model.UserRequest) error
 	QueryUserByName(name string) (*model.UserDB, error)
 	QueryUsersByName(name string) ([]model.UserDB, error)
-	RemoveUserByName(name string) interface{}
-	UpdateUserByName(oldName, newName string) interface{}
+	RemoveUserByName(name string) error
+	UpdateUserByName(oldName, newName string) error
+	SaveUserAmount(userAmount model.UserAmountRequest) error
 }
 
 type UserService struct {
-	Cache   cache.ICache
-	UserDao dao.IUserDao
+	Cache     cache.ICache
+	UserDao   dao.IUserDao
+	AmountDao dao.IAmountDao
 }
 
 func BuildUserService() IUserService {
 	return UserService{
-		Cache:   cache.BuildCache(),
-		UserDao: dao.BuildUserDao(),
+		Cache:     cache.BuildCache(),
+		UserDao:   dao.BuildUserDao(),
+		AmountDao: dao.BuildAmountDao(),
 	}
 }
 
 // save user
-func (service UserService) SaveUser(user model.UserRequest) interface{} {
-	if result, err := service.UserDao.SaveUser(user); err != nil {
-		return nil
-	} else {
-		return result.InsertedID
-	}
+func (service UserService) SaveUser(user model.UserRequest) error {
+	_, err := service.UserDao.SaveUser(user)
+	return err
 }
 
 // bulk save user
-func (service UserService) BulkSaveUser(users []model.UserRequest) int64 {
-	result, err := service.UserDao.BulkSaveUser(users)
-	if err != nil {
-		return 0
-	}
-	return result.InsertedCount
+func (service UserService) BulkSaveUser(users []model.UserRequest) error {
+	_, err := service.UserDao.BulkSaveUser(users)
+	return err
 }
 
-// query user
 func (service UserService) QueryUserByName(name string) (*model.UserDB, error) {
 	return service.UserDao.QueryUserByName(name)
 }
@@ -54,20 +50,17 @@ func (service UserService) QueryUsersByName(name string) ([]model.UserDB, error)
 	return service.UserDao.QueryUsersByName(name)
 }
 
-func (service UserService) UpdateUserByName(oldName, newName string) interface{} {
-	result, err := service.UserDao.UpdateUserByName(oldName, newName)
-	if err != nil {
-		return nil
-	}
-
-	return result.ModifiedCount
+func (service UserService) UpdateUserByName(oldName, newName string) error {
+	_, err := service.UserDao.UpdateUserByName(oldName, newName)
+	return err
 }
 
-func (service UserService) RemoveUserByName(name string) interface{} {
-	result, err := service.UserDao.RemoveUserByName(name)
-	if err != nil {
-		return nil
-	}
+func (service UserService) RemoveUserByName(name string) error {
+	_, err := service.UserDao.RemoveUserByName(name)
+	return err
+}
 
-	return result.DeletedCount
+func (service UserService) SaveUserAmount(userAmount model.UserAmountRequest) error {
+	_, err := service.AmountDao.SaveAmount(userAmount)
+	return err
 }

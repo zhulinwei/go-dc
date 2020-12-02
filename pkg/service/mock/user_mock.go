@@ -34,10 +34,10 @@ func (m *MockIUserService) EXPECT() *MockIUserServiceMockRecorder {
 }
 
 // SaveUser mocks base method
-func (m *MockIUserService) SaveUser(user model.UserRequest) interface{} {
+func (m *MockIUserService) SaveUser(user model.UserRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SaveUser", user)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(error)
 	return ret0
 }
 
@@ -48,10 +48,10 @@ func (mr *MockIUserServiceMockRecorder) SaveUser(user interface{}) *gomock.Call 
 }
 
 // BulkSaveUser mocks base method
-func (m *MockIUserService) BulkSaveUser(users []model.UserRequest) int64 {
+func (m *MockIUserService) BulkSaveUser(users []model.UserRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "BulkSaveUser", users)
-	ret0, _ := ret[0].(int64)
+	ret0, _ := ret[0].(error)
 	return ret0
 }
 
@@ -92,10 +92,10 @@ func (mr *MockIUserServiceMockRecorder) QueryUsersByName(name interface{}) *gomo
 }
 
 // RemoveUserByName mocks base method
-func (m *MockIUserService) RemoveUserByName(name string) interface{} {
+func (m *MockIUserService) RemoveUserByName(name string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveUserByName", name)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(error)
 	return ret0
 }
 
@@ -106,10 +106,10 @@ func (mr *MockIUserServiceMockRecorder) RemoveUserByName(name interface{}) *gomo
 }
 
 // UpdateUserByName mocks base method
-func (m *MockIUserService) UpdateUserByName(oldName, newName string) interface{} {
+func (m *MockIUserService) UpdateUserByName(oldName, newName string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateUserByName", oldName, newName)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(error)
 	return ret0
 }
 
@@ -117,4 +117,18 @@ func (m *MockIUserService) UpdateUserByName(oldName, newName string) interface{}
 func (mr *MockIUserServiceMockRecorder) UpdateUserByName(oldName, newName interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserByName", reflect.TypeOf((*MockIUserService)(nil).UpdateUserByName), oldName, newName)
+}
+
+// SaveUserAmount mocks base method
+func (m *MockIUserService) SaveUserAmount(userAmount model.UserAmountRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SaveUserAmount", userAmount)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SaveUserAmount indicates an expected call of SaveUserAmount
+func (mr *MockIUserServiceMockRecorder) SaveUserAmount(userAmount interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveUserAmount", reflect.TypeOf((*MockIUserService)(nil).SaveUserAmount), userAmount)
 }
