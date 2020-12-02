@@ -9,9 +9,8 @@ import (
 )
 
 const (
-	externalConfigPath = "/var/config.yaml"
-	defaultConfigPath  = "./configs/config.yaml"
-	// defaultConfigPath = "/configs/config.yaml"
+	defaultConfigPath  = "configs/config.yaml"
+	externalConfigPath = "/var/go-dc/config.yaml"
 )
 
 var serverConfig model.ServerConfig

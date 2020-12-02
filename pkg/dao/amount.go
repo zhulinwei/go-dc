@@ -33,7 +33,6 @@ func (amountDao AmountDao) SaveAmount(userAmount model.UserAmountRequest) (*sql.
 		return nil, err
 	}
 	defer stmt.Close()
-
 	result, err := stmt.ExecContext(util.CommonContent(), userAmount.Name, userAmount.Amount)
 	if err != nil {
 		log.Error("amount dao save amount exec fail", log.String("error", err.Error()))

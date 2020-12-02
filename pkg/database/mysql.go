@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -29,7 +28,6 @@ var mysql *MySQL
 
 func BuildMySQL() IMySQL {
 	if mysql == nil {
-		fmt.Println("mysql配置：", config.ServerConfig().MySQL)
 		mysql = &MySQL{configs: config.ServerConfig().MySQL}
 		mysql.init()
 	}
