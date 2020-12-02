@@ -1,0 +1,30 @@
+name: go-dc
+mode: release
+httpPort: :3000
+grpcPort: :3001
+log:
+  level: -1
+  disableCaller: true
+grpc:
+  - name: grpc1
+    addr: localhost:8080
+  - name: grpc2
+    addr: localhost:8081
+redis:
+  - name: cache
+    db: 0
+    addr: redis://localhost:6379
+mysql:
+  - name: db1
+    type: mysql
+    addr: root:zhulinwei123@tcp(localhost:3306)/test_database1
+  - name: db2
+    type: mysql
+    addr: root:zhulinwei123@tcp(localhost:3306)/test_database2
+mongo:
+  - name: db1
+    addr: mongodb://localhost:27017
+    database: test_database1
+  - name: db2
+    addr: mongodb://localhost:27017
+    database: test_database2
